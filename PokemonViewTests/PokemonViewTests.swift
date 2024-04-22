@@ -18,12 +18,22 @@ final class PokemonViewTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    // Test 1: Fetch Pokémon List
+
+    func testFetchPokemonList_ShouldFetchList() {
+        // GIVEN
+        // WHEN
+        // THEN
+    }
     
+    func testSearchPokemon_ShouldFilterList() {
+        // GIVEN
+        // WHEN
+        // THEN
+    }
     
-    // Test 2: Search Pokémon List
-    
-    
-    // Test 3: Fetch details for a particular Pokémon
-    
+    func testFetchPokemonDetails_ShouldGivePokemonDetails() {
+        // GIVEN
+        // WHEN
+        // THEN
+    }
 }
