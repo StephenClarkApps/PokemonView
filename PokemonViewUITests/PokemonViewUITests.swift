@@ -16,18 +16,26 @@ final class PokemonViewUITests: XCTestCase {
         continueAfterFailure = false
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        
+        let app = XCUIApplication()
+        app.launch()
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func test_whenTappingBetweenTabs_AppWorksAsExpected() throws {
+        
+        let tabBar = XCUIApplication().tabBars["Tab Bar"]
+        tabBar.buttons["About"].tap()
+        tabBar.buttons["Pokemon"].tap()
+    }
+    
+    func test_TappingIntoPokemonDetailsScreen_ShowPokemonDetailsScreen() throws {
+        
+        XCUIApplication().collectionViews["Sidebar"]/*@START_MENU_TOKEN@*/.buttons["Bulbasaur"]/*[[".cells.buttons[\"Bulbasaur\"]",".buttons[\"Bulbasaur\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        
     }
 
     func testLaunchPerformance() throws {
@@ -38,4 +46,9 @@ final class PokemonViewUITests: XCTestCase {
             }
         }
     }
+    
+    
 }
+
+
+

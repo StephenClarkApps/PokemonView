@@ -13,108 +13,86 @@ class PokemonListViewModelTests: XCTestCase {
 
     var viewModel: PokemonListViewModel!
     var mockAPIManager: MockAPIManager!
+    var cancellables: Set<AnyCancellable> = []  // Store subscriptions in test cases.
 
     override func setUp() {
         super.setUp()
         mockAPIManager = MockAPIManager()
         viewModel = PokemonListViewModel(apiManager: mockAPIManager)
     }
+    
+    // MARK: - FETCHING & DECODING DATA TESTS
 
+    // Mock Test
     func testFetchPokemonList_ShouldFetchList() {
         // GIVEN
         let expectation = XCTestExpectation(description: "Fetch Pokemon List")
+        expectation.expectedFulfillmentCount = 1  // Expect to fulfill once
+
+        // Register to receive updates. You expect 20 items from your mock.
+        var cancellable: AnyCancellable?
+        cancellable = viewModel.$pokemonList
+            .sink(receiveValue: { pokemonList in
+                if !pokemonList.isEmpty {
+                    XCTAssertEqual(pokemonList.count, 20, "Expected 20 Pokemon to be fetched")
+                    expectation.fulfill()
+                }
+            })
 
         // WHEN
         viewModel.fetchPokemonList()
 
         // THEN
-        var receivedPokemonList: [Pokemon]?
-        var receivedError: Error?
-
-        let cancellable = viewModel.$pokemonList
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .failure(let error):
-                    receivedError = error
-                case .finished:
-                    break
-                }
-                expectation.fulfill()
-            }, receiveValue: { pokemonList in
-                receivedPokemonList = pokemonList
-            })
-
-        wait(for: [expectation], timeout: 2.0)
-
-        XCTAssertNotNil(receivedPokemonList)
-        XCTAssertNil(receivedError)
-        XCTAssertEqual(receivedPokemonList?.count, 2) // We'll ajust this to match the number of pokés that get fetched usually
-        cancellable.cancel()
+        wait(for: [expectation], timeout: 5.0)
+        cancellable?.cancel()
     }
-    
-    func testSearchPokemon_ShouldFilterList() {
-        // GIVEN
-        let expectation = XCTestExpectation(description: "Pokemon List Correctly Filtered")
 
-        // WHEN
-        viewModel.fetchPokemonList()
-        viewModel.searchPokemon(name: "bulbasaur")
-
-        // THEN
-        var receivedFilteredPokemon: [Pokemon]?
-        var receivedError: Error?
-
-        let cancellable = viewModel.$filteredPokemon
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .failure(let error):
-                    receivedError = error
-                case .finished:
-                    break
-                }
-                expectation.fulfill()
-            }, receiveValue: { filteredPokemon in
-                receivedFilteredPokemon = filteredPokemon
-            })
-
-        wait(for: [expectation], timeout: 2.0)
-
-        XCTAssertNotNil(receivedFilteredPokemon)
-        XCTAssertNil(receivedError)
-        XCTAssertEqual(receivedFilteredPokemon?.count, 1) // Assuming only 1 Pokemon matches the search criteria
-        cancellable.cancel()
-    }
-    
+    // Mock Test
     func testFetchPokemonDetails_ShouldGivePokemonDetails() {
         // GIVEN
         let expectation = XCTestExpectation(description: "Fetch Pokemon Details")
+        expectation.expectedFulfillmentCount = 1  // Expect to fulfill once
 
         // WHEN
-        viewModel.fetchPokemonDetails(name: "bulbasaur")
+        let url = "https://pokeapi.co/api/v2/pokemon/1/"
+        viewModel.fetchAndStorePokemonDetails(url: url)
 
         // THEN
-        var receivedPokemonDetails: PokemonDetail?
-        var receivedError: Error?
-
-        let cancellable = viewModel.$pokemonDetails
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .failure(let error):
-                    receivedError = error
-                case .finished:
-                    break
+        var cancellable: AnyCancellable?
+        cancellable = viewModel.$pokemonDetails
+            .sink(receiveValue: { pokemonDetails in
+                if let details = pokemonDetails {
+                    XCTAssertEqual(details.name, "bulbasaur", "Expected to receive details for Bulbasaur")
+                    expectation.fulfill()
                 }
-                expectation.fulfill()
-            }, receiveValue: { pokemonDetails in
-                receivedPokemonDetails = pokemonDetails
             })
 
-        wait(for: [expectation], timeout: 2.0)
-
-        XCTAssertNotNil(receivedPokemonDetails)
-        XCTAssertNil(receivedError)
-        
-        // TODO: - Assetions for the received Pokés deets (make sure params equal what we expect)
-        cancellable.cancel()
+        wait(for: [expectation], timeout: 5.0)
+        cancellable?.cancel()
     }
+
+    // MARK: SEARCH TESTS
+    func testSearchPokemon_FiltersListCorrectly() {
+        // GIVEN
+        let expectation = XCTestExpectation(description: "Pokemon list filtered")
+        let expectedFilteredNames = ["bulbasaur"]  // Assuming your mock includes at least "bulbasaur"
+
+        // Setup initial list
+        viewModel.pokemonList = [
+            IndividualPokemon(name: "bulbasaur", url: "url1"),
+            IndividualPokemon(name: "ivysaur", url: "url2")
+        ]
+
+        // WHEN
+        viewModel.searchPokemon(name: "bulba")
+
+        // THEN
+        XCTAssertEqual(viewModel.filteredPokemon.count, 1, "Should only contain one Pokémon matching 'bulba'")
+        XCTAssertEqual(viewModel.filteredPokemon.first?.name, expectedFilteredNames.first, "Filtered Pokémon should be 'bulbasaur'")
+        expectation.fulfill()
+
+        wait(for: [expectation], timeout: 1.0)
+    }
+
 }
+
