@@ -19,11 +19,13 @@ struct PokemonDetailView: View {
     private var documentsDirectory: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
+    @State private var pulsateAnimation: Bool = false
     
     var body: some View {
         Group {
             if let details = viewModel.pokemonDetail {
                 VStack(alignment: .center, spacing: 25) {
+                    Spacer().frame(height: 10)
                     // Pokémon ID and name at the top (like on the playing cards)
                     HStack {
                         Text(details.name)
@@ -52,10 +54,16 @@ struct PokemonDetailView: View {
                         } placeholder: {
                             ProgressView()
                         }
-                        .frame(width: 220, height: 220)
+                        .frame(width: 300, height: 300)
                         .padding(.horizontal)
                         .padding(.bottom, 5)
+                        .scaleEffect(self.pulsateAnimation ? 1 : 0.9)
+                        .opacity(self.pulsateAnimation ? 1 : 0.9)
+                        .animation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: pulsateAnimation)
                         .accessibilityLabel("Image of Pokémon \(details.name)")
+                        .onAppear {
+                            self.pulsateAnimation.toggle() // Start the animation
+                        }
                         Spacer()
                     }
                     
@@ -98,7 +106,11 @@ struct PokemonDetailView: View {
 
                     Spacer()
                 }
-                .background(Color.white)
+                .background(
+                  Image("background")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                )
                 .cornerRadius(12)
                 .shadow(radius: 5)
                 .padding(.horizontal)

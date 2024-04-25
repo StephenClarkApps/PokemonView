@@ -11,6 +11,10 @@ import Foundation
 struct ContentView: View {
     let apiManager = APIManager() // Single instance created here
 
+    init() {
+       // PVAppearance.setUpApperance()
+    }
+    
     var body: some View {
         TabView {
             PokemonListView(viewModel: PokemonListViewModel(apiManager: apiManager), apiManager: apiManager)
