@@ -13,8 +13,8 @@ import Foundation
 // MARK: - PokemonSpecies
 struct PokemonSpecies: Codable, Hashable {
     let baseHappiness, captureRate: Int
-    let color: Color
-    let eggGroups: [Color]
+    let color: PokemonColor
+    let eggGroups: [PokemonColor]
     let evolutionChain: EvolutionChain
     let evolvesFromSpecies: String?
     let flavorTextEntries: [FlavorTextEntry] // We'll need this if we want to show the flavour text
@@ -22,7 +22,7 @@ struct PokemonSpecies: Codable, Hashable {
     let formsSwitchable: Bool
     let genderRate: Int
     let genera: [Genus]
-    let generation, growthRate, habitat: Color
+    let generation, growthRate, habitat: PokemonColor
     let hasGenderDifferences: Bool
     let hatchCounter, id: Int
     let isBaby, isLegendary, isMythical: Bool
@@ -31,12 +31,12 @@ struct PokemonSpecies: Codable, Hashable {
     let order: Int
     let palParkEncounters: [PalParkEncounter]
     let pokedexNumbers: [PokedexNumber]
-    let shape: Color
+    let shape: PokemonColor
     let varieties: [Variety]
 }
 
 // MARK: - Color
-struct Color: Codable, Hashable {
+struct PokemonColor: Codable, Hashable {
     let name: String
     let url: String
 }
@@ -49,35 +49,35 @@ struct EvolutionChain: Codable, Hashable {
 // MARK: - FlavorTextEntry
 struct FlavorTextEntry: Codable, Hashable {
     let flavorText: String
-    let language, version: Color
+    let language, version: PokemonColor
 }
 
 // MARK: - Genus
 struct Genus: Codable, Hashable {
     let genus: String
-    let language: Color
+    let language: PokemonColor
 }
 
 // MARK: - Name
 struct Name: Codable, Hashable {
-    let language: Color
+    let language: PokemonColor
     let name: String
 }
 
 // MARK: - PalParkEncounter
 struct PalParkEncounter: Codable, Hashable {
-    let area: Color
+    let area: PokemonColor
     let baseScore, rate: Int
 }
 
 // MARK: - PokedexNumber
 struct PokedexNumber: Codable, Hashable {
     let entryNumber: Int
-    let pokedex: Color
+    let pokedex: PokemonColor
 }
 
 // MARK: - Variety
 struct Variety: Codable, Hashable {
     let isDefault: Bool
-    let pokemon: Color
+    let pokemon: PokemonColor
 }

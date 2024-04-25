@@ -94,5 +94,16 @@ class PokemonListViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
+    // FETCHING AND STORING POKEMON SPECIES
+    func test_FetchinPokemonSpecies_WorksCorrectly() {
+        // GIVEN
+        let expectation = XCTestExpectation(description: "Pokemon species can be fetched")
+
+        // WHEN
+        // We fetch the species form the backend
+        
+        // THEN
+        // We get a valid result
+    }
 }
 
