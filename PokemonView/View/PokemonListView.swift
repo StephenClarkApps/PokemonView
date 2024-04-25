@@ -36,7 +36,7 @@ struct PokemonListView: View {
                     self.selectedPokemon = pokemon
                 }) {
                     Text(pokemon.name.capitalized)
-                        .modifier(DefaultBlackText())
+                        .modifier(AdaptiveText())
                 }
                 .accessibilityLabel("\(pokemon.name.capitalized), tap for details")
                 .accessibilityHint("Double-tap to view more details about \(pokemon.name.capitalized)")

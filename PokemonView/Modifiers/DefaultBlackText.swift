@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct DefaultBlackText: ViewModifier {
+struct AdaptiveText: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .foregroundColor(Color.black)
+            .foregroundColor(.primary) // Adjusts automatically to light/dark mode
             .font(.system(.body, design: .default))
     }
 }
