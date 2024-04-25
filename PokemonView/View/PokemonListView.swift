@@ -11,50 +11,56 @@ struct PokemonListView: View {
     @StateObject var viewModel: PokemonListViewModel
     let apiManager: APIManagerProtocol
     @State private var searchText: String = ""
+    @State private var selectedPokemon: IndividualPokemon?
 
     var body: some View {
-        NavigationView {
-            VStack {
-                TextField("Search Pokémon", text: $searchText, onCommit: {
-                    viewModel.searchPokemon(name: searchText)
-                })
+        VStack {
+            Text("Pokedex")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
+                .accessibilityAddTraits(.isHeader) 
+
+            TextField("Search Pokémon", text: $searchText)
+                .padding()
+                .disableAutocorrection(true)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .onChange(of: searchText) { newValue in
+                    viewModel.searchPokemon(name: newValue)
+                }
                 .accessibilityLabel("Search Pokémon")
                 .accessibilityHint("Enter a Pokémon name to search in the list.")
-                .padding()
-                .textFieldStyle(RoundedBorderTextFieldStyle())
 
-                List(viewModel.filteredPokemon, id: \.self) { pokemon in
-                    NavigationLink(destination: PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: apiManager),
-                                                                  pokemonURL: pokemon.url)) {
-                        Text(pokemon.name.capitalized)
-                            .font(.system(size: 18, weight: .medium, design: .default))
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.5)
+            List(viewModel.filteredPokemon, id: \.self) { pokemon in
+                Button(action: {
+                    self.selectedPokemon = pokemon
+                }) {
+                    Text(pokemon.name.capitalized)
+                        .modifier(DefaultBlackText())
+                }
+                .accessibilityLabel("\(pokemon.name.capitalized), tap for details")
+                .accessibilityHint("Double-tap to view more details about \(pokemon.name.capitalized)")
+                .onAppear {
+                    if pokemon == viewModel.filteredPokemon.last && viewModel.hasMoreData {
+                        viewModel.fetchPokemonList()
                     }
-                    .accessibilityLabel("\(pokemon.name.capitalized), tap to view details")
-                    .accessibilityHint("Double-tap to view more details about \(pokemon.name.capitalized)")
-                    .onAppear {
-                        if pokemon == viewModel.filteredPokemon.last {
-                            viewModel.fetchPokemonList()
-                        }
-                    }
-                } // :List
-                .navigationTitle("Pokémon List")
-            } //: VStack
-        } // :NavigationView
-        .onAppear {
-            viewModel.fetchPokemonList()
+                }
+            }
+            .sheet(item: $selectedPokemon) { pokemon in
+                PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: apiManager), pokemonURL: pokemon.url)
+            }
         }
-    }
-
-    private func loadPokemonDetailsIfNeeded(_ pokemon: IndividualPokemon) {
-        if viewModel.pokemonDetails == nil || viewModel.pokemonDetails?.name != pokemon.name {
-            viewModel.fetchAndStorePokemonDetails(url: pokemon.url)
+        .onAppear {
+            if viewModel.pokemonList.isEmpty {
+                viewModel.fetchPokemonList()
+            }
         }
     }
 }
+
 
 let apiManForPrev = APIManager()
 #Preview {
     PokemonListView(viewModel: PokemonListViewModel(apiManager: apiManForPrev), apiManager: apiManForPrev)
 }
+

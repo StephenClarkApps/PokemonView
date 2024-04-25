@@ -25,29 +25,50 @@ class PokemonListViewModel: ObservableObject {
         self.apiManager = apiManager
     }
     
+//    func fetchPokemonList() {
+//        guard !isLoading && hasMoreData else { return }
+//        isLoading = true
+//
+//        apiManager.fetchPokemonList(offset: currentPage * 20, limit: 20)
+//            .sink(receiveCompletion: { [weak self] completion in
+//                switch completion {
+//                case .finished:
+//                    self?.isLoading = false
+//                case .failure(let error):
+//                    print("Error fetching Pokémon list: \(error)")
+//                    self?.isLoading = false
+//                    self?.hasMoreData = false
+//                }
+//            }, receiveValue: { [weak self] response in
+//                self?.pokemonList.append(contentsOf: response.results)
+//                self?.filteredPokemon = self?.pokemonList ?? []
+//                self?.currentPage += 1
+//                self?.hasMoreData = response.next != nil
+//                self?.isLoading = false
+//            })
+//            .store(in: &cancellables)
+//    }
+    
     func fetchPokemonList() {
-        guard !isLoading && hasMoreData else { return }
+        guard !isLoading else { return }
         isLoading = true
+        let limit = 2000  // Fetch all Pokémon, adjust if the number increases in the future.
 
-        apiManager.fetchPokemonList(offset: currentPage * 20, limit: 20)
+        apiManager.fetchPokemonList(offset: 0, limit: limit)
             .sink(receiveCompletion: { [weak self] completion in
-                switch completion {
-                case .finished:
-                    self?.isLoading = false
-                case .failure(let error):
+                self?.isLoading = false
+                if case .failure(let error) = completion {
                     print("Error fetching Pokémon list: \(error)")
-                    self?.isLoading = false
-                    self?.hasMoreData = false
+                    self?.requestSucceeded = false
                 }
             }, receiveValue: { [weak self] response in
-                self?.pokemonList.append(contentsOf: response.results)
-                self?.filteredPokemon = self?.pokemonList ?? []
-                self?.currentPage += 1
-                self?.hasMoreData = response.next != nil
-                self?.isLoading = false
+                self?.pokemonList = response.results
+                self?.filteredPokemon = response.results
+                self?.hasMoreData = false  // No more data to fetch as we've got all Pokémon.
             })
             .store(in: &cancellables)
     }
+
     
     func fetchAndStorePokemonDetails(url: String) {
         fetchPokemonDetails(url: url)

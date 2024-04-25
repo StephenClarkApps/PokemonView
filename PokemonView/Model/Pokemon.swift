@@ -10,7 +10,7 @@ import Foundation
 // MARK: - Pokemon
 struct Pokemon: Codable, Hashable {
     let count: Int
-    let next: String
+    let next: String?
     let previous: String?
     let results: [IndividualPokemon]
 }
