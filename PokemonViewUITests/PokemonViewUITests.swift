@@ -34,7 +34,7 @@ final class PokemonViewUITests: XCTestCase {
     
     func test_TappingIntoPokemonDetailsScreen_ShowPokemonDetailsScreen() throws {
         
-        XCUIApplication().collectionViews["Sidebar"]/*@START_MENU_TOKEN@*/.buttons["Bulbasaur"]/*[[".cells.buttons[\"Bulbasaur\"]",".buttons[\"Bulbasaur\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        XCUIApplication().collectionViews["Sidebar"]/*@START_MENU_TOKEN@*/.staticTexts["Bulbasaur"]/*[[".cells",".buttons[\"Bulbasaur, tap to view details\"].staticTexts[\"Bulbasaur\"]",".staticTexts[\"Bulbasaur\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.tap()
         
     }
 

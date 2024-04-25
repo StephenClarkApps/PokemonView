@@ -29,6 +29,7 @@
 		863FB79A2BD9A659002FF098 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863FB7992BD9A659002FF098 /* ContentView.swift */; };
 		863FB79E2BD9B901002FF098 /* DefaultGreyText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863FB79D2BD9B901002FF098 /* DefaultGreyText.swift */; };
 		863FB7A02BD9BF64002FF098 /* PokemonDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863FB79F2BD9BF64002FF098 /* PokemonDetailViewModel.swift */; };
+		863FB7A32BD9D5B0002FF098 /* OggDecoder in Frameworks */ = {isa = PBXBuildFile; productRef = 863FB7A22BD9D5B0002FF098 /* OggDecoder */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				863FB7A32BD9D5B0002FF098 /* OggDecoder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -238,6 +240,9 @@
 			dependencies = (
 			);
 			name = PokemonView;
+			packageProductDependencies = (
+				863FB7A22BD9D5B0002FF098 /* OggDecoder */,
+			);
 			productName = PokemonView;
 			productReference = 863FB74F2BD69EFD002FF098 /* PokemonView.app */;
 			productType = "com.apple.product-type.application";
@@ -310,6 +315,9 @@
 				Base,
 			);
 			mainGroup = 863FB7462BD69EFD002FF098;
+			packageReferences = (
+				863FB7A12BD9D4B6002FF098 /* XCRemoteSwiftPackageReference "OggDecoder" */,
+			);
 			productRefGroup = 863FB7502BD69EFD002FF098 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -725,6 +733,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		863FB7A12BD9D4B6002FF098 /* XCRemoteSwiftPackageReference "OggDecoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/arkasas/OggDecoder";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		863FB7A22BD9D5B0002FF098 /* OggDecoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 863FB7A12BD9D4B6002FF098 /* XCRemoteSwiftPackageReference "OggDecoder" */;
+			productName = OggDecoder;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 863FB7472BD69EFD002FF098 /* Project object */;
 }

@@ -15,6 +15,7 @@ import Foundation
 struct PokemonDetail: Codable {
     let id: Int
     let name: String
+    let cries: Cries
     let height: Int
     let weight: Int
     let sprites: Sprites
@@ -24,6 +25,7 @@ struct PokemonDetail: Codable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
+        case cries
         case height
         case weight
         case sprites
@@ -64,4 +66,9 @@ struct TypeElement: Codable {
 struct Species: Codable {
     let name: String
     let url: String
+}
+
+// MARK: - Cries
+struct Cries: Codable {
+    let latest, legacy: String
 }
