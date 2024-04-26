@@ -49,4 +49,20 @@ class APIManager: APIManagerProtocol {
             .eraseToAnyPublisher()
     }
     
+    
+    /// Fetches detailed information about a specific Pokemon species from the API.
+      /// - Parameter speciesId: The ID of the Pokemon species to fetch.
+      /// - Returns: A publisher that emits `PokemonSpecies` object or an error.
+      func fetchPokemonSpecies(speciesId: Int) -> AnyPublisher<PokemonSpecies, Error> {
+          let urlString = "\(Constants.API.baseURL)/pokemon-species/\(speciesId)"
+          guard let url = URL(string: urlString) else {
+              fatalError("Invalid URL for Pokemon species")
+          }
+          
+          return URLSession.shared.dataTaskPublisher(for: url)
+              .map(\.data)
+              .decode(type: PokemonSpecies.self, decoder: JSONDecoder())
+              .receive(on: DispatchQueue.main)
+              .eraseToAnyPublisher()
+      }
 }

@@ -41,6 +41,20 @@ class MockAPIManager: APIManagerProtocol {
         }
     }
     
+    func fetchPokemonSpecies(speciesId: Int) -> AnyPublisher<PokemonSpecies, Error> {
+        if shouldReturnError {
+            return Fail(error: NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Mocked error"]))
+                .eraseToAnyPublisher()
+        } else {
+            let mockPokemonSpecies = mockPokemonSpeciesResponse()
+            return Just(mockPokemonSpecies)
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+    }
+    
+    // MARK: - MOCK RESPONSES FROM LOCAL JSON FILES
+    
     
     /// Retrieves a `Pokemon` object from a local JSON file meant to simulate a network response.
     private func mockPokemonListResponse() -> Pokemon {
@@ -63,4 +77,22 @@ class MockAPIManager: APIManagerProtocol {
         }
         return pokemonDetail
     }
+    
+    func mockPokemonSpeciesResponse() -> PokemonSpecies {
+        let bundle = Bundle(for: type(of: self))
+        guard let url = bundle.url(forResource: "MockPokemonSpecies132", withExtension: "json") else {
+            fatalError("Failed to find MockPokemonSpecies132.json")
+        }
+        
+        do {
+            let data = try Data(contentsOf: url)
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let pokemonSpecies = try decoder.decode(PokemonSpecies.self, from: data)
+            return pokemonSpecies
+        } catch {
+            fatalError("Failed to decode MockPokemonSpecies132.json: \(error)")
+        }
+    }
+
 }

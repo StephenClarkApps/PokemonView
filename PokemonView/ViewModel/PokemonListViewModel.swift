@@ -13,6 +13,7 @@ class PokemonListViewModel: ObservableObject {
     @Published var pokemonList: [IndividualPokemon] = []
     @Published var filteredPokemon: [IndividualPokemon] = []
     @Published var pokemonDetails: PokemonDetail?
+    @Published var pokemonSpecies: PokemonSpecies?
     @Published var isLoading: Bool = false
     @Published var currentPage: Int = 0
     @Published var hasMoreData: Bool = true
@@ -44,6 +45,29 @@ class PokemonListViewModel: ObservableObject {
             })
             .store(in: &cancellables)
     }
+    
+    /// Fetches Pokémon species by ID and updates the view model.
+      /// - Parameter speciesId: The ID of the Pokémon species to fetch.
+      func fetchPokemonSpecies(speciesId: Int)  -> AnyPublisher<PokemonSpecies, Error> {
+          return apiManager.fetchPokemonSpecies(speciesId: speciesId)
+              .receive(on: DispatchQueue.main)
+              .eraseToAnyPublisher()
+//          apiManager.fetchPokemonSpecies(speciesId: speciesId)
+//              .receive(on: DispatchQueue.main)
+//              .sink(receiveCompletion: { [weak self] completion in
+//                  switch completion {
+//                  case .finished:
+//                      print("Successfully fetched Pokémon species.")
+//                  case .failure(let error):
+//                      print("Error fetching Pokémon species: \(error)")
+//                      self?.requestSucceeded = false  // Update request status accordingly.
+//                  }
+//              }, receiveValue: { [weak self] species in
+//                  self?.pokemonSpecies = species
+//                  print("Species details updated for Pokémon ID \(species.id).")
+//              })
+//              .store(in: &self.cancellables)
+      }
 
     
     func fetchAndStorePokemonDetails(url: String) {

@@ -44,6 +44,7 @@
 		86E423172BDC03DF0055A402 /* CustomAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E423162BDC03DF0055A402 /* CustomAsyncImage.swift */; };
 		86E4231A2BDC0FCE0055A402 /* AudioMangerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E423192BDC0FCE0055A402 /* AudioMangerTests.swift */; };
 		86E4231C2BDC0FE20055A402 /* ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E4231B2BDC0FE20055A402 /* ExtensionsTests.swift */; };
+		86E4231F2BDC189B0055A402 /* MockPokemonSpecies132.json in Resources */ = {isa = PBXBuildFile; fileRef = 86E4231D2BDC155A0055A402 /* MockPokemonSpecies132.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,7 @@
 		86E423162BDC03DF0055A402 /* CustomAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAsyncImage.swift; sourceTree = "<group>"; };
 		86E423192BDC0FCE0055A402 /* AudioMangerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMangerTests.swift; sourceTree = "<group>"; };
 		86E4231B2BDC0FE20055A402 /* ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsTests.swift; sourceTree = "<group>"; };
+		86E4231D2BDC155A0055A402 /* MockPokemonSpecies132.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MockPokemonSpecies132.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 				863FB7802BD719B7002FF098 /* MockApiManager.swift */,
 				863FB78E2BD72649002FF098 /* MockPokemonDetails.json */,
 				863FB7902BD726CD002FF098 /* MockPokemonList.json */,
+				86E4231D2BDC155A0055A402 /* MockPokemonSpecies132.json */,
 			);
 			path = PokemonViewTests;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 			files = (
 				863FB78F2BD72649002FF098 /* MockPokemonDetails.json in Resources */,
 				863FB7912BD726CD002FF098 /* MockPokemonList.json in Resources */,
+				86E4231F2BDC189B0055A402 /* MockPokemonSpecies132.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

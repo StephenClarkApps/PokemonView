@@ -21,6 +21,7 @@ class PokemonListViewModelTests: XCTestCase {
         viewModel = PokemonListViewModel(apiManager: mockAPIManager)
     }
     
+    
     // MARK: - FETCHING & DECODING DATA TESTS
 
     // Mock Test
@@ -95,17 +96,31 @@ class PokemonListViewModelTests: XCTestCase {
     }
 
     // FETCHING AND STORING POKEMON SPECIES
-    func test_FetchinPokemonSpecies_WorksCorrectly() {
-        // GIVEN
-        let expectation = XCTestExpectation(description: "Pokemon species can be fetched")
+    func testFetchingPokemonSpecies_WorksCorrectly() {
+        // Given
+        let expectation = XCTestExpectation(description: "Pokemon species can be fetched and decoded correctly")
+        let speciesId = 132  // Assuming this ID corresponds to the species in your mock JSON
+        let mockSpecies = mockAPIManager.mockPokemonSpeciesResponse()
 
-        // WHEN
-        // We fetch the species form the backend
-        
-        // THEN
-        // We get a valid result
-        wait(for: [expectation], timeout: 1.0)
+        // When
+        viewModel.fetchPokemonSpecies(speciesId: speciesId)
 
+        // Then
+        viewModel.$pokemonSpecies
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    XCTFail("Failed with error: \(error)")
+                }
+            }, receiveValue: { species in
+                XCTAssertNotNil(species, "The fetched Pokemon species should not be nil")
+                XCTAssertEqual(species?.id, mockSpecies.id, "The fetched species ID should match the mocked data ID")
+                XCTAssertEqual(species?.name, mockSpecies.name, "The fetched species name should match the mocked data name")
+                // More asserts can be added here based on other properties
+                expectation.fulfill()
+            })
+            .store(in: &self.cancellables)
+
+        wait(for: [expectation], timeout: 5.0)
     }
         
 }

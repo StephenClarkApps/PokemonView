@@ -61,9 +61,25 @@ class LiveListViewModelTests: XCTestCase {
     }
     
     // MARK: - Pokemon Species Sync
-    func test_LiveFetchPokemonSpecies_RetrievesSpecies() throws {
-        
-    }
+//    func test_LiveFetchPokemonSpecies_RetrievesSpecies() throws {
+//         let expectation = XCTestExpectation(description: "Fetch Live Pokemon Species")
+//         let speciesId = 132  // Example species ID for Ditto
+//
+//         apiManager.fetchPokemonSpecies(speciesId: speciesId)
+//             .sink(receiveCompletion: { completion in
+//                 if case .failure(let error) = completion {
+//                     XCTFail("Failed with error: \(error)")
+//                     expectation.fulfill()
+//                 }
+//             }, receiveValue: { species in
+//                 XCTAssertNotNil(species, "The fetched Pokemon species should not be nil")
+//                 XCTAssertEqual(species.id, speciesId, "The fetched species ID should match the requested ID")
+//                 expectation.fulfill()
+//             })
+//             .store(in: &cancellables)
+//
+//         wait(for: [expectation], timeout: 10.0)  // Timeout adjusted based on expected response times
+//     }
 
     // MARK: - SYNC (We probaly want to sync pokemon and species on app launch and store them)
     
