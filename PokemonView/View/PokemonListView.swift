@@ -12,7 +12,7 @@ struct PokemonListView: View {
     let apiManager: APIManagerProtocol
     @State private var searchText: String = ""
     @State private var selectedPokemon: IndividualPokemon?
-    
+
     var body: some View {
         VStack {
             // MARK: - HEADER
@@ -38,44 +38,73 @@ struct PokemonListView: View {
                 TextField("Search Pokémon", text: $searchText)
                     .disableAutocorrection(true)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(height: 40.0)
+
                 
                 if !searchText.isEmpty {
                     Button(action: { searchText = ""; hideKeyboard()}) {
                         Image(systemName: "xmark.circle.fill")
                             .foregroundColor(.gray)
                     }
+                    .accessibilityLabel("Clear the search field")
                 }
             } //: HSTACK
-            .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
+            .padding(10)
+            .border(Color.gray, width: 1.0)
+            .cornerRadius(0)
+            .padding(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
             .onChange(of: searchText) { newValue in
                 viewModel.searchPokemon(name: newValue)
             }
             .accessibilityLabel("Search Pokémon")
             .accessibilityHint("Enter a Pokémon name to search in the list.")
             
-            // MARK: - LIST OF POKÉMON
-            List(viewModel.filteredPokemon, id: \.self) { pokemon in
-                Button(action: {
-                    self.selectedPokemon = pokemon
-                }) {
-                    HStack {
-                        Image("icnPokemon").resizable().frame(width: 40, height: 40, alignment: .leading).padding().border(.black, width: 2.0)
-                        Spacer().frame(width: 10)
-                        Text(pokemon.name.capitalized)
-                            .modifier(AdaptiveText())
+            ScrollViewReader { scrollViewProxy in
+                ZStack {
+                    List(viewModel.filteredPokemon, id: \.self) { pokemon in
+                        Button(action: {
+                            self.selectedPokemon = pokemon
+                        }) {
+                            HStack {
+                                Image("icnPokemon").resizable().frame(width: 40, height: 40, alignment: .leading).padding().border(.black, width: 2.0)
+                                Spacer().frame(width: 10)
+                                Text(pokemon.name.capitalized)
+                                    .modifier(AdaptiveText())
+                            }
+                        }
+                        .id(pokemon.id)  // unique identifier
+                        .accessibilityLabel("\(pokemon.name.capitalized), tap for details")
+                        .accessibilityHint("Double-tap to view more details about \(pokemon.name.capitalized)")
+                        .onAppear {
+                            if pokemon == viewModel.filteredPokemon.last && viewModel.hasMoreData {
+                                viewModel.fetchPokemonList()
+                            }
+                        }
+                    } //: LIST
+                    
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Button("Scroll to Top") {
+                                // withAnimation {
+                                scrollViewProxy.scrollTo(viewModel.filteredPokemon.first?.id, anchor: .top)
+                                // }
+                            }
+                            .accessibilityLabel("Scroll to the top of the List of Pokemon")
+                            .padding(5)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 3)
+                            .padding()
+                        }//: HStack
                     }
                 }
-                .accessibilityLabel("\(pokemon.name.capitalized), tap for details")
-                .accessibilityHint("Double-tap to view more details about \(pokemon.name.capitalized)")
-                .onAppear {
-                    if pokemon == viewModel.filteredPokemon.last && viewModel.hasMoreData {
-                        viewModel.fetchPokemonList()
-                    }
+                .sheet(item: $selectedPokemon) { pokemon in
+                    PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: apiManager), pokemonURL: pokemon.url)
                 }
-            } //: LIST
-            .sheet(item: $selectedPokemon) { pokemon in
-                PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: apiManager), pokemonURL: pokemon.url)
-            }
+            } //: ScrollViewReader
         } //: VSTACK
         .onAppear {
             if viewModel.pokemonList.isEmpty {
@@ -83,7 +112,7 @@ struct PokemonListView: View {
             }
         }
     } //: VIEW
-    
+
     // MARK: - HELPER FUNCTIONS
     
     // Helper function to hide the keyboard
@@ -91,6 +120,8 @@ struct PokemonListView: View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
+
+
 
 
 let apiManForPrev = APIManager()
