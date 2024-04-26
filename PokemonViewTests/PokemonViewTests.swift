@@ -96,31 +96,28 @@ class PokemonListViewModelTests: XCTestCase {
     }
 
     // FETCHING AND STORING POKEMON SPECIES
-    func testFetchingPokemonSpecies_WorksCorrectly() {
-        // Given
-        let expectation = XCTestExpectation(description: "Pokemon species can be fetched and decoded correctly")
-        let speciesId = 132  // Assuming this ID corresponds to the species in your mock JSON
-        let mockSpecies = mockAPIManager.mockPokemonSpeciesResponse()
 
-        // When
-        viewModel.fetchPokemonSpecies(speciesId: speciesId)
+    func testFetchPokemonSpecies_ShouldGivePokemonSpeciesDetails() {
+        // GIVEN
+        let expectation = XCTestExpectation(description: "Fetch Pokemon Details")
+        expectation.expectedFulfillmentCount = 1  // Expect to fulfill once
 
-        // Then
-        viewModel.$pokemonSpecies
-            .sink(receiveCompletion: { completion in
-                if case .failure(let error) = completion {
-                    XCTFail("Failed with error: \(error)")
+        // WHEN
+        let url = "https://pokeapi.co/api/v2/pokemon-species/132/"
+        viewModel.fetchAndStorePokemonSpecies(url: url) //(url: url)
+
+        // THEN
+        var cancellable: AnyCancellable?
+        cancellable = viewModel.$pokemonSpecies
+            .sink(receiveValue: { pokemonSpecies in
+                if let details = pokemonSpecies {
+                    XCTAssertEqual(details.baseHappiness!, 50, "Expected base happiness to be 50")
+                    expectation.fulfill()
                 }
-            }, receiveValue: { species in
-                XCTAssertNotNil(species, "The fetched Pokemon species should not be nil")
-                XCTAssertEqual(species?.id, mockSpecies.id, "The fetched species ID should match the mocked data ID")
-                XCTAssertEqual(species?.name, mockSpecies.name, "The fetched species name should match the mocked data name")
-                // More asserts can be added here based on other properties
-                expectation.fulfill()
             })
-            .store(in: &self.cancellables)
 
         wait(for: [expectation], timeout: 5.0)
+        cancellable?.cancel()
     }
         
 }

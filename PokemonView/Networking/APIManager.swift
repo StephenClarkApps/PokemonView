@@ -51,10 +51,10 @@ class APIManager: APIManagerProtocol {
     
     
     /// Fetches detailed information about a specific Pokemon species from the API.
-      /// - Parameter speciesId: The ID of the Pokemon species to fetch.
+      /// - Parameter URL: URL
       /// - Returns: A publisher that emits `PokemonSpecies` object or an error.
-      func fetchPokemonSpecies(speciesId: Int) -> AnyPublisher<PokemonSpecies, Error> {
-          let urlString = "\(Constants.API.baseURL)/pokemon-species/\(speciesId)"
+      func fetchPokemonSpecies(url: String) -> AnyPublisher<PokemonSpecies, Error> {
+          let urlString = url
           guard let url = URL(string: urlString) else {
               fatalError("Invalid URL for Pokemon species")
           }

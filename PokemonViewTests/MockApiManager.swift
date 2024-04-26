@@ -41,7 +41,7 @@ class MockAPIManager: APIManagerProtocol {
         }
     }
     
-    func fetchPokemonSpecies(speciesId: Int) -> AnyPublisher<PokemonSpecies, Error> {
+    func fetchPokemonSpecies(url: String) -> AnyPublisher<PokemonSpecies, Error> {
         if shouldReturnError {
             return Fail(error: NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Mocked error"]))
                 .eraseToAnyPublisher()

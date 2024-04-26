@@ -13,6 +13,6 @@ import Combine
 protocol APIManagerProtocol {
     func fetchPokemonList(offset: Int, limit: Int) -> AnyPublisher<Pokemon, Error>
     func fetchPokemonDetails(url: String) -> AnyPublisher<PokemonDetail, Error>
-    func fetchPokemonSpecies(speciesId: Int) -> AnyPublisher<PokemonSpecies, Error>
+    func fetchPokemonSpecies(url: String) -> AnyPublisher<PokemonSpecies, Error>
     
 }
