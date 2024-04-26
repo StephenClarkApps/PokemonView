@@ -60,40 +60,58 @@ struct PokemonDetailView: View {
                     
                     // Pokémon Image
                     GeometryReader { geometry in
-                        HStack {
-                            Spacer()
-                            Button(action: {
-                                // Define the action to perform when the image is tapped
-                                print("Pokemon image tapped")
-                            }) {
-                                AsyncImage(url: URL(string: details.sprites.frontDefault)) {
-                                    image in image.resizable()
-                                        .aspectRatio(contentMode: .fit)
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    print("Pokemon image tapped")
+                                }) {
+                                    AsyncImage(url: URL(string: details.sprites.frontDefault)) { image in
+                                        image.resizable()
+                                             .aspectRatio(contentMode: .fit)
+                                    }
+                                    placeholder: {
+                                        ProgressView()
+                                    }
                                 }
-                                placeholder: {
-                                    ProgressView()
+                                .shadow(color: .gray, radius: 10, x: 5, y: 5)
+                                .scaleEffect(self.pulsateAnimation ? 1.1 : 0.95)
+                                .opacity(self.pulsateAnimation ? 1 : 0.8)
+                                .animation(Animation.easeInOut(duration: 1.3).repeatForever(autoreverses: true), value: pulsateAnimation)
+                                .accessibilityLabel("An Image of Selected Pokémon, with the number \(details.id) Which is called: \(details.name)")
+                                .onAppear {
+                                    self.pulsateAnimation.toggle() // Start the animation
                                 }
+                                Spacer()
                             }
-                            .shadow(color: .gray, radius: 10, x: 5, y: 5)
-                            .scaleEffect(self.pulsateAnimation ? 1.1 : 0.95)
-                            .opacity(self.pulsateAnimation ? 1 : 0.8)
-                            .animation(Animation.easeInOut(duration: 1.3).repeatForever(autoreverses: true), value: pulsateAnimation)
-                            .accessibilityLabel("An Image of Selected Pokémon, with the number \(details.id) Which is called: \(details.name)")
-                            .onAppear {
-                                self.pulsateAnimation.toggle() // Start the animation
-                            }
-                            Spacer()
+                            .frame(width: horizontalSizeClass == .compact ? geometry.size.width * 0.95 : geometry.size.width * 0.6,
+                                   height: horizontalSizeClass == .compact ? (geometry.size.width * 0.95) / 1.4 : (geometry.size.width * 0.6) / 1.4)
+                            .background(Color.white.opacity(0.35)) // Semi-transparent background
+                            .cornerRadius(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 6)
+                                    .stroke(Color(UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)), lineWidth: 6)
+                            )
+                            .padding(10)
                         }
-                        // Frame adjustments
-                        .frame(width: horizontalSizeClass == .compact ? geometry.size.width * 0.95 : geometry.size.width * 0.6,
-                               height: horizontalSizeClass == .compact ? (geometry.size.width * 0.95) / 1.4 : (geometry.size.width * 0.6) / 1.4)
-                        .background(Color.white.opacity(0.35)) // Semi-transparent background
-                        .border(Color.pokemonFrameGold, width: 10) // Gold border akin to some kinds of trading card
-                        .cornerRadius(10)
-                        .padding(10)
-                    }
-
+                    } //: GEOMETRY READER
                     
+
+
+                    // Type badges using icons
+                    HStack {
+                        Spacer()
+                        ForEach(details.types, id: \.slot) { type in
+                            PokemonTypeIcon(typeName: type.type.name.capitalized, color: Color("\(type.type.name)Color"), iconName: "\(type.type.name)")
+                                .accessibilityLabel("\(type.type.name.capitalized) type")
+                        }
+                        Spacer()
+                    }
+                    .padding()
+                    .border(Color.gray, width: 3.0)
+                    .cornerRadius(3.0)
+                    .padding(.horizontal)
+                    .accessibilityElement(children: .combine)
                     
                     // Button to play cry
                     Button("Hear My Cry!") {
@@ -105,22 +123,6 @@ struct PokemonDetailView: View {
                     .cornerRadius(8)
                     .accessibilityLabel("Hear it's cry!")
                     
-                    // Type badges
-                    HStack {
-                        Spacer()
-                        ForEach(details.types, id: \.slot) { type in
-                            Text(type.type.name.capitalized)
-                                .font(.caption)
-                                .padding(8)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .accessibilityLabel("This Pokemon has the type: \(type.type.name)")
-                        }
-                        Spacer()
-                    }
-                    .padding(.horizontal)
-                    .accessibilityElement(children: .combine)
 
               
 
@@ -135,23 +137,10 @@ struct PokemonDetailView: View {
                     Spacer()
                 }
                 .frame(maxWidth: 500, maxHeight: 900) // Max dimensions for iPad purposes
-                .background(
-                    Group {
-                        if colorScheme == .dark {
-                            Image("background_dark") // Image for dark mode
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } else {
-                            Image("background") // Image for light mode
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        }
-                    }
-                    .accessibilityHidden(true) // Hides the background image from accessibility tools
-                )
-                .cornerRadius(12)
+                .border(Color.brown, width: 2) // Border Like a Card border
+                .cornerRadius(5)
                 .shadow(radius: 5)
-                .padding(.horizontal)
+                .padding()
             } else {
                 Text("Loading...")
                     .accessibilityLabel("Loading Pokémon details")

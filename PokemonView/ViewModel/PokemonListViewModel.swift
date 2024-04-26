@@ -25,30 +25,6 @@ class PokemonListViewModel: ObservableObject {
         self.apiManager = apiManager
     }
     
-//    func fetchPokemonList() {
-//        guard !isLoading && hasMoreData else { return }
-//        isLoading = true
-//
-//        apiManager.fetchPokemonList(offset: currentPage * 20, limit: 20)
-//            .sink(receiveCompletion: { [weak self] completion in
-//                switch completion {
-//                case .finished:
-//                    self?.isLoading = false
-//                case .failure(let error):
-//                    print("Error fetching Pokémon list: \(error)")
-//                    self?.isLoading = false
-//                    self?.hasMoreData = false
-//                }
-//            }, receiveValue: { [weak self] response in
-//                self?.pokemonList.append(contentsOf: response.results)
-//                self?.filteredPokemon = self?.pokemonList ?? []
-//                self?.currentPage += 1
-//                self?.hasMoreData = response.next != nil
-//                self?.isLoading = false
-//            })
-//            .store(in: &cancellables)
-//    }
-    
     func fetchPokemonList() {
         guard !isLoading else { return }
         isLoading = true

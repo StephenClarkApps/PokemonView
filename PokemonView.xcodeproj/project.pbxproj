@@ -37,6 +37,7 @@
 		86E423072BDB19310055A402 /* ScaledFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E423062BDB19310055A402 /* ScaledFont.swift */; };
 		86E423092BDB19550055A402 /* PokemonView+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E423082BDB19550055A402 /* PokemonView+String.swift */; };
 		86E4230B2BDB19C90055A402 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E4230A2BDB19C90055A402 /* AudioManager.swift */; };
+		86E4230D2BDBEAFF0055A402 /* PokemonIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E4230C2BDBEAFF0055A402 /* PokemonIconView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		86E423062BDB19310055A402 /* ScaledFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaledFont.swift; sourceTree = "<group>"; };
 		86E423082BDB19550055A402 /* PokemonView+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PokemonView+String.swift"; sourceTree = "<group>"; };
 		86E4230A2BDB19C90055A402 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		86E4230C2BDBEAFF0055A402 /* PokemonIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonIconView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +224,7 @@
 				863FB7942BD9205A002FF098 /* PokemonDetailView.swift */,
 				863FB7972BD93D09002FF098 /* AboutView.swift */,
 				863FB7992BD9A659002FF098 /* ContentView.swift */,
+				86E4230C2BDBEAFF0055A402 /* PokemonIconView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -392,6 +395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				863FB78D2BD72573002FF098 /* APIManager.swift in Sources */,
+				86E4230D2BDBEAFF0055A402 /* PokemonIconView.swift in Sources */,
 				863FB79E2BD9B901002FF098 /* DefaultGreyText.swift in Sources */,
 				86E423092BDB19550055A402 /* PokemonView+String.swift in Sources */,
 				863FB79A2BD9A659002FF098 /* ContentView.swift in Sources */,
