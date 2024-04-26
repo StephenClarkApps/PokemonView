@@ -66,13 +66,12 @@ struct PokemonDetailView: View {
                                 print("Pokemon image tapped")
                                 AudioManager.shared.playPokemonCry(legacyUrl: details.cries.legacy, latestUrl: details.cries.latest)
                             }) {
-                                AsyncImage(url: URL(string: details.sprites.frontDefault)) { image in
-                                    image.resizable()
-                                        .aspectRatio(contentMode: .fit)
+                                
+                                CustomAsyncImage(url: URL(string: details.sprites.frontDefault)!) {
+                                    ProgressView() // Placehoder here
                                 }
-                                placeholder: {
-                                    ProgressView()
-                                }
+                                .aspectRatio(contentMode: .fit)
+                                .clipped()
                                 .scaleEffect(self.pulsateAnimation ? 1.1 : 1.0) // Scale effect for animation
                                 .onAppear {
                                     withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true)) {
