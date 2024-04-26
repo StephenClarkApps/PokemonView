@@ -112,6 +112,9 @@ class PokemonListViewModelTests: XCTestCase {
             .sink(receiveValue: { pokemonSpecies in
                 if let details = pokemonSpecies {
                     XCTAssertEqual(details.baseHappiness!, 50, "Expected base happiness to be 50")
+                    XCTAssertEqual(details.flavorTextEntries!.first!.flavorText!, 
+                                   "Capable of copying\nan enemy\'s genetic\ncode to instantly\u{0C}transform itself\ninto a duplicate\nof the enemy.",
+                                   "Should be the expected flavor text!")
                     expectation.fulfill()
                 }
             })
