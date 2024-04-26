@@ -7,19 +7,23 @@
 
 import SwiftUI
 import Foundation
-import OggDecoder
-import AVFoundation
 
 struct PokemonDetailView: View {
     
     // MARK: - PROPERTIES
+    
     @ObservedObject var viewModel: PokemonDetailViewModel
     let pokemonURL: String
-    @State private var player: AVPlayer?
     private var documentsDirectory: URL {
         FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     }
     @State private var pulsateAnimation: Bool = false
+    
+    // Environment properties to handle device orientation
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    @Environment(\.colorScheme) var colorScheme
+
     
     var body: some View {
         Group {
@@ -31,7 +35,7 @@ struct PokemonDetailView: View {
                         Text(details.name.capitalizingFirstLetter())
                             .scaledFont(name: "GillSans", size: 30)
                             .fontWeight(.bold)
-                            .foregroundColor(.black)
+                            .foregroundColor(Color("ColorTextAdaptive"))
                             .accessibilityAddTraits(.isHeader)
                             .accessibilityLabel("Pokémon name: \(details.name.capitalizingFirstLetter())")
 
@@ -41,13 +45,13 @@ struct PokemonDetailView: View {
                         HStack(alignment: .firstTextBaseline, spacing: 2) {
                             Text("HP")
                                 .scaledFont(name: "Ariel", size: 15)
-                                .fontWeight(.black)
-                                .foregroundColor(.black)
+                                .foregroundColor(Color("ColorTextAdaptive"))
+                                .foregroundColor(.white)
 
                             Text(details.stats.first(where: { $0.stat.name == "hp" })?.baseStat.description ?? "--")
                                 .scaledFont(name: "GillSans", size: 40)
                                 .fontWeight(.semibold)
-                                .foregroundColor(.black)
+                                .foregroundColor(Color("ColorTextAdaptive"))
                         }
                         .accessibilityLabel("Health Points: \(details.stats.first(where: { $0.stat.name == "hp" })?.baseStat.description ?? "unknown")")
                         
@@ -58,39 +62,48 @@ struct PokemonDetailView: View {
                     GeometryReader { geometry in
                         HStack {
                             Spacer()
-                            AsyncImage(url: URL(string: details.sprites.frontDefault)) { image in
-                                image.resizable()
-                                    .aspectRatio(contentMode: .fit)
-                            } placeholder: {
-                                ProgressView()
+                            Button(action: {
+                                // Define the action to perform when the image is tapped
+                                print("Pokemon image tapped")
+                            }) {
+                                AsyncImage(url: URL(string: details.sprites.frontDefault)) {
+                                    image in image.resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                }
+                                placeholder: {
+                                    ProgressView()
+                                }
                             }
                             .shadow(color: .gray, radius: 10, x: 5, y: 5)
                             .scaleEffect(self.pulsateAnimation ? 1.1 : 0.95)
                             .opacity(self.pulsateAnimation ? 1 : 0.8)
                             .animation(Animation.easeInOut(duration: 1.3).repeatForever(autoreverses: true), value: pulsateAnimation)
-                            .accessibilityLabel("Image of Pokémon \(details.name)")
+                            .accessibilityLabel("An Image of Selected Pokémon, with the number \(details.id) Which is called: \(details.name)")
                             .onAppear {
                                 self.pulsateAnimation.toggle() // Start the animation
                             }
                             Spacer()
                         }
-                        .frame(width: geometry.size.width * 0.95, height: (geometry.size.width * 0.95) / 1.4)
-                        .background(Color.white.opacity(0.35)) // Applying semi-transparent background
-                        .border(Color.gold, width: 10) // Gold border like a trading card
+                        // Frame adjustments
+                        .frame(width: horizontalSizeClass == .compact ? geometry.size.width * 0.95 : geometry.size.width * 0.6,
+                               height: horizontalSizeClass == .compact ? (geometry.size.width * 0.95) / 1.4 : (geometry.size.width * 0.6) / 1.4)
+                        .background(Color.white.opacity(0.35)) // Semi-transparent background
+                        .border(Color.pokemonFrameGold, width: 10) // Gold border akin to some kinds of trading card
                         .cornerRadius(10)
-                        .padding(10) // Minimal padding to maintain the aspect ratio
+                        .padding(10)
                     }
 
+                    
                     
                     // Button to play cry
                     Button("Hear My Cry!") {
                         AudioManager.shared.playPokemonCry(legacyUrl: details.cries.legacy, latestUrl: details.cries.latest)
                     }
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .background(Color("ColorBlueAdaptive"))
+                    .foregroundColor(Color("ColorOtherAdaptiveYellow"))
                     .cornerRadius(8)
-                    .accessibilityLabel("Tap to hear the Pokémon cry")
+                    .accessibilityLabel("Hear it's cry!")
                     
                     // Type badges
                     HStack {
@@ -102,7 +115,7 @@ struct PokemonDetailView: View {
                                 .background(Color.blue)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
-                                .accessibilityLabel("\(type.type.name) type")
+                                .accessibilityLabel("This Pokemon has the type: \(type.type.name)")
                         }
                         Spacer()
                     }
@@ -121,11 +134,20 @@ struct PokemonDetailView: View {
 
                     Spacer()
                 }
-                .frame(maxWidth: 500, maxHeight: 900) // Mac dims for iPad purposes
+                .frame(maxWidth: 500, maxHeight: 900) // Max dimensions for iPad purposes
                 .background(
-                  Image("background")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    Group {
+                        if colorScheme == .dark {
+                            Image("background_dark") // Image for dark mode
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } else {
+                            Image("background") // Image for light mode
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        }
+                    }
+                    .accessibilityHidden(true) // Hides the background image from accessibility tools
                 )
                 .cornerRadius(12)
                 .shadow(radius: 5)

@@ -12,25 +12,48 @@ struct PokemonListView: View {
     let apiManager: APIManagerProtocol
     @State private var searchText: String = ""
     @State private var selectedPokemon: IndividualPokemon?
-
+    
     var body: some View {
         VStack {
-            Text("Pokedex")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding()
-                .accessibilityAddTraits(.isHeader) 
-
-            TextField("Search Pokémon", text: $searchText)
-                .padding()
-                .disableAutocorrection(true)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: searchText) { newValue in
-                    viewModel.searchPokemon(name: newValue)
+            // MARK: - HEADER
+            VStack(alignment: .center, spacing: 5) {
+                Image("pokemonLogo")
+                    .resizable()
+                    .scaledToFit()
+                    .padding(.top)
+                    .frame(width: 200, height: 100, alignment: .center)
+                    .shadow(color: Color("ColorBlackTransparentLight"), radius: 8, x: 0, y: 4)
+                
+                Text("View")
+                    .scaledFont(name: "GillSans", size: 30)
+                    .fontWeight(.bold)
+                    .foregroundColor(Color("ColorYellowAdaptive"))
+                    .padding(.top, -10)
+            } //: VSTACK
+            .accessibilityLabel("Pokémon View App Logo")
+            .padding()
+            
+            // MARK: - SEARCH AREA
+            HStack {
+                TextField("Search Pokémon", text: $searchText)
+                    .disableAutocorrection(true)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                if !searchText.isEmpty {
+                    Button(action: { searchText = ""; hideKeyboard()}) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                    }
                 }
-                .accessibilityLabel("Search Pokémon")
-                .accessibilityHint("Enter a Pokémon name to search in the list.")
-
+            } //: HSTACK
+            .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
+            .onChange(of: searchText) { newValue in
+                viewModel.searchPokemon(name: newValue)
+            }
+            .accessibilityLabel("Search Pokémon")
+            .accessibilityHint("Enter a Pokémon name to search in the list.")
+            
+            // MARK: - LIST OF POKÉMON
             List(viewModel.filteredPokemon, id: \.self) { pokemon in
                 Button(action: {
                     self.selectedPokemon = pokemon
@@ -45,16 +68,23 @@ struct PokemonListView: View {
                         viewModel.fetchPokemonList()
                     }
                 }
-            }
+            } //: LIST
             .sheet(item: $selectedPokemon) { pokemon in
                 PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: apiManager), pokemonURL: pokemon.url)
             }
-        }
+        } //: VSTACK
         .onAppear {
             if viewModel.pokemonList.isEmpty {
                 viewModel.fetchPokemonList()
             }
         }
+    } //: VIEW
+    
+    // MARK: - HELPER FUNCTIONS
+    
+    // Helper function to hide the keyboard
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 

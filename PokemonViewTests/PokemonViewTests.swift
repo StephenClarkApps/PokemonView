@@ -105,5 +105,10 @@ class PokemonListViewModelTests: XCTestCase {
         // THEN
         // We get a valid result
     }
+    
+    // TODO: - TESTS OF THE EXTENSIONS AND MODIFIERS
+    
+    // TODO: - TESTS OF AUDIO MANAGER
+
 }
 

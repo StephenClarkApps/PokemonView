@@ -18,16 +18,17 @@ struct AboutView: View {
                 Image("pokemonLogo")
                     .resizable()
                     .scaledToFit()
-                    .accessibilityLabel("Pokémon Logo")
                     .padding(.top)
                     .frame(width: 200, height: 100, alignment: .center)
                     .shadow(color: Color("ColorBlackTransparentLight"), radius: 8, x: 0, y: 4)
                 
                 Text("View")
-                    .font(.system(.title, design: .serif))
+                    .scaledFont(name: "GillSans", size: 30)
                     .fontWeight(.bold)
                     .foregroundColor(Color("ColorYellowAdaptive"))
+                    .padding(.top, -10)
             } //: VSTACK
+            .accessibilityLabel("Pokémon View App Logo")
             .padding()
             
             Form {
@@ -37,17 +38,18 @@ struct AboutView: View {
                         Text("Version").modifier(DefaultGreyText())
                         Spacer()
                         Text("1.0.0")
-                    }
+                    }.accessibilityLabel("Version 1.0.0")
+
                     HStack {
                         Text("Developer").modifier(DefaultGreyText())
                         Spacer()
                         Text("Stephen Clark")
-                    }
+                    }.accessibilityLabel("Developer. Stephen Clark")
                     HStack {
                         Text("Credits").modifier(DefaultGreyText())
                         Spacer()
                         Text("Data provided by PokéAPI")
-                    }
+                    }.accessibilityLabel("Credits. Data provided by PokéAPI")
                     HStack {
                         VStack {
                             Spacer()
@@ -62,7 +64,7 @@ struct AboutView: View {
                                     .font(.system(.body, design: .default))
                                 Spacer()
                             }
-                        }
+                        }.accessibilityLabel("Legal Text. All Pokémon content is © Nintendo, Game Freak, and The Pokémon Company.")
                     }
                 } //: FROM SECTION
                 

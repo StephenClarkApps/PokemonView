@@ -8,5 +8,5 @@
 import SwiftUI
 
 extension Color {
-    static let gold = Color(red: 0.83, green: 0.59, blue: 0.22, opacity: 0.5)
+    static let pokemonFrameGold = Color(red: 0.83, green: 0.59, blue: 0.22, opacity: 0.35)
 }
