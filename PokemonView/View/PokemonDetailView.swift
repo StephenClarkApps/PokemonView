@@ -89,8 +89,6 @@ struct PokemonDetailView: View {
                         }
                     }
 
-
-
                     // Type badges using icons
                     HStack {
                         Spacer()
@@ -118,9 +116,9 @@ struct PokemonDetailView: View {
                     Spacer()
                 }
                 .frame(maxWidth: 500, maxHeight: 900) // Max dimensions for iPad purposes
-                .border(Color.brown, width: 2) // Border Like a Card border
-                .cornerRadius(5)
-                .shadow(radius: 5)
+                .border(Color.gray, width: 3) // Border Like a Card border
+                .cornerRadius(3)
+                .shadow(radius:6)
                 .padding()
             } else {
                 Text("Loading...")
