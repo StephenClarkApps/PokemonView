@@ -9,8 +9,6 @@ import XCTest
 import Combine
 @testable import PokemonView
 
-@testable import PokemonView
-
 class LiveListViewModelTests: XCTestCase {
 
     var viewModel: PokemonListViewModel!

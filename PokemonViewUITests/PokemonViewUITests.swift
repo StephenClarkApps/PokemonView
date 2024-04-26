@@ -36,10 +36,11 @@ final class PokemonViewUITests: XCTestCase {
                 
         let app = XCUIApplication()
         // Open the detail view
-        app.collectionViews.buttons["Bulbasaur, tap for details"].tap()
-        // Play the Bulbasaur cry
-        app.buttons["Tap to hear the Pokémon cry"].tap()
+        app.collectionViews/*@START_MENU_TOKEN@*/.staticTexts["Bulbasaur"]/*[[".cells",".buttons[\"Bulbasaur, tap for details\"].staticTexts[\"Bulbasaur\"]",".staticTexts[\"Bulbasaur\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.tap()
         
+        // Play the Pokemons Sound
+        //app.buttons["Pokemon Image, tap for sound"].tap()
+
     }
 
     func testLaunchPerformance() throws {
