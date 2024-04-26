@@ -58,8 +58,12 @@ struct PokemonListView: View {
                 Button(action: {
                     self.selectedPokemon = pokemon
                 }) {
-                    Text(pokemon.name.capitalized)
-                        .modifier(AdaptiveText())
+                    HStack {
+                        Image("icnPokemon").resizable().frame(width: 40, height: 40, alignment: .leading).padding().border(.black, width: 2.0)
+                        Spacer().frame(width: 10)
+                        Text(pokemon.name.capitalized)
+                            .modifier(AdaptiveText())
+                    }
                 }
                 .accessibilityLabel("\(pokemon.name.capitalized), tap for details")
                 .accessibilityHint("Double-tap to view more details about \(pokemon.name.capitalized)")
