@@ -23,7 +23,7 @@ struct AboutView: View {
                     .shadow(color: Color("ColorBlackTransparentLight"), radius: 8, x: 0, y: 4)
                 
                 Text("View")
-                    .scaledFont(name: "GillSans", size: 30)
+                    .scaledFont(name: "Gill Sans", size: 30)
                     .fontWeight(.bold)
                     .foregroundColor(Color("ColorYellowAdaptive"))
                     .padding(.top, -10)

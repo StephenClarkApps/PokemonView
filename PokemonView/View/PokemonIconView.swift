@@ -36,7 +36,7 @@ struct PokemonTypeIcon: View {
                             }, perform: {})
             
             Text(typeName)
-                .scaledFont(name: "GillSans", size: 18)
+                .scaledFont(name: "Gill Sans", size: 18)
                 .fontWeight(.semibold)
                 .foregroundColor(Color("ColorTextAdaptive"))
         } //: VSTACK

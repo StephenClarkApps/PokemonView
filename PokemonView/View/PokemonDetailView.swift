@@ -33,7 +33,7 @@ struct PokemonDetailView: View {
                     // Pokémon ID and name at the top (like on the playing cards)
                     HStack {
                         Text(details.name.capitalizingFirstLetter())
-                            .scaledFont(name: "GillSans", size: 30)
+                            .scaledFont(name: "Gill Sans", size: 30)
                             .fontWeight(.bold)
                             .foregroundColor(Color("ColorTextAdaptive"))
                             .accessibilityAddTraits(.isHeader)
@@ -49,7 +49,7 @@ struct PokemonDetailView: View {
                                 .foregroundColor(.white)
 
                             Text(details.stats.first(where: { $0.stat.name == "hp" })?.baseStat.description ?? "--")
-                                .scaledFont(name: "GillSans", size: 40)
+                                .scaledFont(name: "Gill Sans", size: 40)
                                 .fontWeight(.semibold)
                                 .foregroundColor(Color("ColorTextAdaptive"))
                         }
@@ -68,8 +68,15 @@ struct PokemonDetailView: View {
                             }) {
                                 
                                 CustomAsyncImage(url: URL(string: details.sprites.frontDefault)!) {
-                                    ProgressView() // Placehoder here
+                                    AnyView(Text("Loading...")  // Wrap the placeholder in AnyView
+                                        .frame(width: 100, height: 100)
+                                        .background(Color.gray.opacity(0.3))
+                                        .cornerRadius(10))
                                 }
+                                
+//                                CustomAsyncImage(url: URL(string: details.sprites.frontDefault)!) {
+//                                    ProgressView() // Placehoder here
+//                                }
                                 .aspectRatio(contentMode: .fit)
                                 .clipped()
                                 .scaleEffect(self.pulsateAnimation ? 1.1 : 1.0) // Scale effect for animation

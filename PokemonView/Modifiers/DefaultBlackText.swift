@@ -11,7 +11,7 @@ struct AdaptiveText: ViewModifier {
     func body(content: Content) -> some View {
         content
             .foregroundColor(.primary) // Adjusts automatically to light/dark mode
-            .scaledFont(name: "GillSans", size: 20) // Automatically adjust size if needed
+            .scaledFont(name: "Gill Sans", size: 20) // Automatically adjust size if needed
             .fontWeight(.regular)
     }
 }
