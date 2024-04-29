@@ -9,12 +9,9 @@ import SwiftUI
 import Foundation
 
 struct ContentView: View {
-    let apiManager = APIManager(cacheManager: PokemonCacheManager(realmProvider: DefaultRealmProvider())) 
-
-    init() {
-       // PVAppearance.setUpApperance()
-    }
     
+    let apiManager = APIManager(cacheManager: PokemonCacheManager(realmProvider: DefaultRealmProvider()))
+
     var body: some View {
         TabView {
             PokemonListView(viewModel: PokemonListViewModel(apiManager: apiManager), apiManager: apiManager)

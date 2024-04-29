@@ -37,7 +37,7 @@ struct IndividualPokemon: Codable, Identifiable, Hashable {
     var name: String
     var url: String
     var spriteUrl: String {
-        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(id).png" // TODO: - MOVE TO CONSTANTS
+        return "\(Constants.API.pokemonSpriteBaseUrl)\(id)\(Constants.API.pokemonSpriteSuffix)"
     }
 
     init(name: String, url: String) {

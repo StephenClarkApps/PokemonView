@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+
+/// View modifiers are a good way to de-deplcate and standardise code with SwiftUI
 struct DefaultGreyText: ViewModifier {
     func body(content: Content) -> some View {
         content

@@ -11,7 +11,7 @@ import Foundation
 struct PokemonDetailView: View {
     
     // MARK: - PROPERTIES
-    @ObservedObject var viewModel: PokemonDetailViewModel
+    @ObservedObject var viewModel: PokemonDetailViewModel // injected from elsewhere so @ObservedObject
     let pokemonURL: String
     @State private var pulsateAnimation: Bool = false
 
@@ -53,12 +53,15 @@ struct PokemonDetailView: View {
                         HStack {
                             Spacer()
                             Button(action: {
-                                print("Pokemon image tapped")
+                                print("Pokemon image tapped - Sound will play")
+                                
+                                // PLAY SOUND
+                                AudioManager.shared.playPokemonCry(legacyUrl: details.cries?.legacy ?? "", latestUrl: details.cries?.latest ?? "")
+                                
                                 // HAPTIC
                                 let generator = UIImpactFeedbackGenerator(style: .rigid)
                                 generator.impactOccurred()
-                                // PLAY SOUND
-                                AudioManager.shared.playPokemonCry(legacyUrl: details.cries?.legacy ?? "", latestUrl: details.cries?.latest ?? "")
+                               
                             }) {
                                 
                                 CustomAsyncImage(url: URL(string: details.sprites?.frontDefault ?? "")!) {

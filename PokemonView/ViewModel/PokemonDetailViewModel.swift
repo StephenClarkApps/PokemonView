@@ -8,9 +8,10 @@
 import Combine
 import Foundation
 
-
 class PokemonDetailViewModel: ObservableObject {
     @Published var pokemonDetail: PokemonDetail?
+    @Published var errorMessage: String?  
+
     private var cancellables = Set<AnyCancellable>()
     private let apiManager: PokemonAPIManagerProtocol
     
@@ -21,9 +22,14 @@ class PokemonDetailViewModel: ObservableObject {
     func loadPokemonDetails(from url: String) {
         apiManager.fetchPokemonDetails(url: url)
             .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                if case .failure(let error) = completion {
+            .sink(receiveCompletion: { [weak self] completion in
+                switch completion {
+                case .finished:
+                    // Optionally handle completed state
+                    break
+                case .failure(let error):
                     print("Error loading Pokémon details: \(error)")
+                    self?.errorMessage = "Failed to load Pokémon details: \(error.localizedDescription)"
                 }
             }, receiveValue: { [weak self] details in
                 self?.pokemonDetail = details
@@ -31,3 +37,4 @@ class PokemonDetailViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 }
+

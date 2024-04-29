@@ -36,7 +36,7 @@ struct PokemonTypeIcon: View {
                             }, perform: {})
             
             Text(typeName)
-                .scaledFont(name: "Gill Sans", size: 18)
+                .scaledFont(name: "Gill Sans", size: 18) // This font is included in iOS and used on the trading cards
                 .fontWeight(.semibold)
                 .foregroundColor(Color("ColorTextAdaptive"))
         } //: VSTACK

@@ -14,6 +14,7 @@ struct CustomAsyncImage<Placeholder: View>: View {
     let url: URL
     private let placeholder: Placeholder
     @State private var uiImage: UIImage? = nil
+    @State private var opacity = 0.0  // State to handle opacity for animation
 
     init(url: URL, @ViewBuilder placeholder: () -> Placeholder) {
         self.placeholder = placeholder()
@@ -27,6 +28,12 @@ struct CustomAsyncImage<Placeholder: View>: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .clipped()
+                    .opacity(opacity)  // Apply dynamic opacity
+                    .onAppear {
+                        withAnimation(.easeIn(duration: Constants.UI.imageFadeInTime)) {
+                            opacity = 1.0
+                        }
+                    }
             } else {
                 placeholder
             }
@@ -37,11 +44,17 @@ struct CustomAsyncImage<Placeholder: View>: View {
 
     private func load(_ url: URL) {
         ImagePipeline.shared.loadImage(with: url) { result in
-            if case let .success(response) = result {
+            switch result {
+            case .success(let response):
                 DispatchQueue.main.async {
                     self.uiImage = response.image
                 }
+            case .failure:
+                break  
             }
         }
     }
 }
+
+
+

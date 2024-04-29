@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PokemonListView: View {
-    @StateObject var viewModel: PokemonListViewModel
+    @ObservedObject var viewModel: PokemonListViewModel // injected from elsewhere so @ObservedObject
     let apiManager: PokemonAPIManagerProtocol
     @State private var searchText: String = ""
     @State private var selectedPokemon: IndividualPokemon?
@@ -66,9 +66,9 @@ struct PokemonListView: View {
                             CustomAsyncImage(url: URL(string: pokemon.spriteUrl)!) {
                                 ProgressView()
                             }
-                            .frame(width: 50, height: 50)
+                            .frame(width: 55, height: 55)
                             .cornerRadius(25)
-
+                            
                             Text(pokemon.name.capitalized)
                                 .modifier(AdaptiveText())
                             Spacer()
@@ -93,13 +93,7 @@ struct PokemonListView: View {
                         HStack {
                             Spacer()
                             Button("Scroll to Top") {
-                                // First, stop the momentum by scrolling to a nearby element
-//                                if let firstItem = viewModel.filteredPokemon.first {
-//                                    scrollViewProxy.scrollTo(firstItem.id, anchor: .top)
-//                                }
-//                                
                                 scrollViewProxy.scrollTo(viewModel.filteredPokemon.first?.id ?? "0", anchor: .top)
-                                
                             }
                             .accessibilityLabel("Scroll to the top of the List of Pokemon")
                             .frame(height: 30.0)
@@ -109,13 +103,13 @@ struct PokemonListView: View {
                             .cornerRadius(10)
                             .shadow(radius: 3)
                             .padding()
-                        }//: HStack
-                    }
-                }
+                        }//: HSTACK
+                    } //: VSTACK
+                }//: ZSTACK
             } //: ScrollViewReader
         } //: VSTACK
         .onAppear {
-            if viewModel.pokemonList.isEmpty { //|| apiManager.isCacheExpired() {
+            if viewModel.pokemonList.isEmpty {
                 viewModel.fetchPokemonList()
             }
         }
@@ -135,6 +129,7 @@ struct PokemonListView: View {
 let realmProvider = DefaultRealmProvider()
 let cacheManager = PokemonCacheManager(realmProvider: realmProvider)
 let apiManForPrev = APIManager(cacheManager: cacheManager)
+
 #Preview {
     PokemonListView(viewModel: PokemonListViewModel(apiManager: apiManForPrev), apiManager: apiManForPrev)
 }

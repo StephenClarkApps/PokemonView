@@ -9,6 +9,8 @@
 import Combine
 import Foundation
 
+// TODO: - Optimise, for example with the use of Generics to de-duplicate code
+
 /// Class that Manages the apps interaction with the backend API service
 class APIManager: PokemonAPIManagerProtocol {
     

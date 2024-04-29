@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// Custom adaptive font sizing based on users iOS settings
 struct ScaledFont: ViewModifier {
     @Environment(\.sizeCategory) var sizeCategory
     var name: String
