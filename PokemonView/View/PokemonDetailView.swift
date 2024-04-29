@@ -105,13 +105,20 @@ struct PokemonDetailView: View {
                     .accessibilityElement(children: .combine)
                     
 
-                    // Flavor text
-                    Text("Flavor text goes here")
+                    // Weight
+                    Text("Weight: \(details.weight) hectograms")
                         .font(.caption)
                         .italic()
-                        .padding()
+                        .padding(5)
                         .foregroundColor(.gray)
-                        .accessibilityLabel("Flavor text: Flavor text goes here")
+                        .accessibilityLabel("Pokemon Weight is: \(details.weight) hectograms")
+                    // Height
+                    Text("Height: \(details.height) decimetres")
+                        .font(.caption)
+                        .italic()
+                        .padding(5)
+                        .foregroundColor(.gray)
+                        .accessibilityLabel("Pokemon Height is: \(details.height) decimetres")
 
                     Spacer()
                 }

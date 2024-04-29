@@ -9,11 +9,11 @@ I though this was a cool little project as my Nephew loves Pokémon trading card
 ### Features
 - **Searchable Pokémon List:** Dynamically search through Pokémon by name with results updating in real-time.
 - **Pokémon Statistics:** View information on each Pokèmon including sprites and play their sounds on a dedicated Pokémon detail screen.
-- **Accessibility Support:** Enhanced accessibility features such as VoiceOver, dynamic text resizing, and high-contrast UI.
+- **Accessibility Support:** Enhanced accessibility features such as VoiceOver, dynamic text resizing, and high-contrast UI. The app also supports Dark mode fully. 
 - **Caching of Data:** This app will cache the list data, the individual Pokémon data, and the images and sounds, using Nuke and our custom audio logic. This means it's efficient (it won't re query or re-download data unless the user request it) and can support some offline functionality.
 
 ### Tech Stack
-- **Languages/Frameworks:** Swift, SwiftUI, Combine, Realm
+- **Languages/Frameworks:** Swift, SwiftUI, Combine, Realm, Swift Package Manager
 - **Approach**: I took a broadly TDD approach (with a lot of adjustments)
 - **API:** Pokémon API (https://pokeapi.co)
 - **Database:** Realm for local data persistence
