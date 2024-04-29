@@ -253,6 +253,20 @@
                   startingLineNumber = "62"
                   endingLineNumber = "62">
                </Location>
+               <Location
+                  uuid = "720B63A3-7CCA-487B-B27B-515214E39BEE - 6c2c8506797c59f4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (PokemonView.PokemonSpecies) -&gt; () in PokemonView.PokemonListViewModel.fetchAndStorePokemonSpecies(url: Swift.String) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/ViewModel/PokemonListViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
