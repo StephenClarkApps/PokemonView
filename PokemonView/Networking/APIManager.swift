@@ -62,7 +62,9 @@ class APIManager: PokemonAPIManagerProtocol {
             .map(\.data)
             .decode(type: PokemonDetail.self, decoder: JSONDecoder())
             .handleEvents(receiveOutput: { [weak self] pokemonDetail in
-                self?.cacheManager.savePokemonDetail(pokemonDetail, for: url.absoluteString)
+                self?.cacheManager.savePokemonDetail(pokemonDetail, for: url.absoluteString, completion: {
+                    print("Saved pokemon detail")
+                })
             })
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

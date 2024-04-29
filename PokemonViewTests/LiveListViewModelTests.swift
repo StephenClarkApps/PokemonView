@@ -18,6 +18,7 @@ class LiveListViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         let realmProvider = DefaultRealmProvider()
         let someCacheManager = PokemonCacheManager(realmProvider: realmProvider)
+        someCacheManager.clearCache()
         viewModel = PokemonListViewModel(apiManager: APIManager(cacheManager: someCacheManager))
     }
 
@@ -62,19 +63,5 @@ class LiveListViewModelTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
     }
-    
-    // MARK: - SYNC (We probaly want to sync pokemon and species on app launch and store them)
-    
-    
-    // MARK: - Locally Store and Cache Data (SwiftDate or Realm)
-    
-    // We need data from more than one endpoint in many cases to make up complete
-    // data for both our list and details view.
-    
-    // Because the data is largely immutable which we know is true because it's actually served as static
-    // content in the current backend implmentation, we can resonably sync and cache it for a while
-    // this also helps us compose each view when we come to it.
-    
-    // We can have a forceFetch BOOL flag to force the fetching of new results and the clearing of local storage
-    // and potentially refresh the data if it's been stored for a while (say over a day for example)
+
 }

@@ -68,7 +68,7 @@ class PokemonCacheManager: PokemonCacheManagerProtocol {
                     realm.deleteAll()
                     // Add or update the new data
                     realm.add(cachedPokemonObject, update: .modified)
-                    completion()  // Call completion after the realm write transaction is complete
+                    completion()
                 }
             } catch {
                 print("Failed to save Pokemon list to Realm: \(error)")
@@ -78,7 +78,7 @@ class PokemonCacheManager: PokemonCacheManagerProtocol {
     }
 
 
-    func savePokemonDetail(_ pokemonDetail: PokemonDetail, for url: String) {
+    func savePokemonDetail(_ pokemonDetail: PokemonDetail, for url: String, completion: @escaping () -> Void) {
         DispatchQueue.main.async {
             let cachedPokemonDetailObject = PokemonDetailRealmObject(from: pokemonDetail)
             print("Saving \(cachedPokemonDetailObject.name)'s Details to Realm")
@@ -86,6 +86,7 @@ class PokemonCacheManager: PokemonCacheManagerProtocol {
                 let realm = self.realmProvider.realm // Access realm directly from realmProvider
                 try realm.write {
                     realm.add(cachedPokemonDetailObject, update: .modified)
+                    completion()
                 }
             } catch {
                 print("Failed to save Pokemon detail to Realm: \(error)")
@@ -122,7 +123,7 @@ protocol PokemonCacheManagerProtocol {
     func retrievePokemonDetail(for url: String) -> PokemonDetail?
     func retrieveLastCacheDate() -> Date?
     func savePokemonList(_ pokemonList: Pokemon, completion: @escaping () -> Void)
-    func savePokemonDetail(_ pokemonDetail: PokemonDetail, for url: String)
+    func savePokemonDetail(_ pokemonDetail: PokemonDetail, for url: String, completion: @escaping () -> Void) 
 }
 
 func extractIDFromURL(_ url: String) -> Int? {

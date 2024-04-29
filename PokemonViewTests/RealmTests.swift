@@ -53,43 +53,34 @@ class PokemonCacheManagerTests: XCTestCase {
         XCTAssertEqual(retrievedPokemon?.next, testPokemon.next)
         XCTAssertEqual(retrievedPokemon?.previous, testPokemon.previous)
         XCTAssertEqual(retrievedPokemon?.results.count, testPokemon.results.count)
+        
+        cacheManager.clearCache()
     }
 
     
-//    func testSaveAndRetrievePokemonDetail() {
-//
-//        // Create a test Pokemon detail
-//        let testDetail = PokemonDetail(id: 1, name: "Buzz", cries: nil, height: 20, weight: 10, sprites: nil, stats: [], types: [])
-//        let testUrl = "https://test.com"
-//        cacheManager.savePokemonDetail(testDetail, for: testUrl)
-//        
-//        // Retrieve the saved Pokemon detail
-//        let retrievedDetail = cacheManager.retrievePokemonDetail(for: testUrl)
-//        
-//        XCTAssertEqual(retrievedDetail?.name, testDetail.name)
-//        XCTAssertEqual(retrievedDetail?.height, testDetail.height)
-//        XCTAssertEqual(retrievedDetail?.weight, testDetail.weight)
-//    }
+    func testSaveAndRetrievePokemonDetail() {
+        
+        let expectation = self.expectation(description: "AsyncSavePokemonDetail")
+
+
+        // Create a test Pokemon detail
+        let testDetail = PokemonDetail(id: 1, name: "Buzz", cries: nil, height: 20, weight: 10, sprites: nil, stats: [], types: [])
+        let testUrl = "https://test.com/1"
+        cacheManager.savePokemonDetail(testDetail, for: testUrl) {
+            expectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 5, handler: nil)
+
+        print("testUrl \(testUrl)")
+        // Retrieve the saved Pokemon detail
+        let retrievedDetail = cacheManager.retrievePokemonDetail(for: testUrl)
+        
+        XCTAssertEqual(retrievedDetail!.name, testDetail.name)
+        XCTAssertEqual(retrievedDetail!.height, testDetail.height)
+        XCTAssertEqual(retrievedDetail!.weight, testDetail.weight)
+    }
     
-//    func testConvertingCodableToRealm() {
-//        // Create a test Pokemon list
-//
-//        let testPokemon = Pokemon(count: 10, next: "https://test.com", previous: "", results: [
-//            IndividualPokemon(name: "Test1", url: "https://test.com/1"),
-//            IndividualPokemon(name: "Test2", url: "https://test.com/2")
-//        ])
-//        
-//        // Convert to Realm object and save
-//        cacheManager.savePokemonList(testPokemon)
-//        
-//        // Retrieve the saved Pokemon list
-//        let retrievedPokemon: Pokemon? = cacheManager.retrievePokemonList()
-//        
-//        XCTAssertEqual(retrievedPokemon?.count, testPokemon.count)
-//        XCTAssertEqual(retrievedPokemon?.next, testPokemon.next)
-//        XCTAssertEqual(retrievedPokemon?.previous, testPokemon.previous)
-//        XCTAssertEqual(retrievedPokemon?.results.count, testPokemon.results.count)
-//    }
 
     func test_ConvertingRealmObjectToCodableStruct_Works() {
         // Create a test Realm Pokemon list
@@ -117,6 +108,7 @@ class PokemonCacheManagerTests: XCTestCase {
 
         // Write the Realm object
         try! realmProvider.realm.write {
+            realmProvider.realm.deleteAll()
             realmProvider.realm.add(realmObject)
         }
         
