@@ -12,9 +12,9 @@ import Foundation
 class PokemonDetailViewModel: ObservableObject {
     @Published var pokemonDetail: PokemonDetail?
     private var cancellables = Set<AnyCancellable>()
-    private let apiManager: APIManagerProtocol
+    private let apiManager: PokemonAPIManagerProtocol
     
-    init(apiManager: APIManagerProtocol) {
+    init(apiManager: PokemonAPIManagerProtocol) {
         self.apiManager = apiManager
     }
     

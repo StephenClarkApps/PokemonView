@@ -174,115 +174,9 @@
             filePath = "PokemonView/ViewModel/PokemonListViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "fetchPokemonSpecies(speciesId:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "4E25E754-24DB-4452-B3C7-C6E1BDDA067E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PokemonView/ViewModel/PokemonListViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "fetchPokemonSpecies(speciesId:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "720B63A3-7CCA-487B-B27B-515214E39BEE"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PokemonView/ViewModel/PokemonListViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "fetchPokemonSpecies(speciesId:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "720B63A3-7CCA-487B-B27B-515214E39BEE - 1d57c41f88fc37fc"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PokemonView.PokemonListViewModel.fetchPokemonSpecies(speciesId: Swift.Int) -&gt; ()"
-                  moduleName = "PokemonView"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/stephenclark/Desktop/NewTestApps/PokemonView/PokemonView/ViewModel/PokemonListViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62">
-               </Location>
-               <Location
-                  uuid = "720B63A3-7CCA-487B-B27B-515214E39BEE - 3beaef2947e6adb5"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Combine.Subscribers.Completion&lt;Swift.Error&gt;) -&gt; () in PokemonView.PokemonListViewModel.fetchPokemonSpecies(speciesId: Swift.Int) -&gt; ()"
-                  moduleName = "PokemonView"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/stephenclark/Desktop/NewTestApps/PokemonView/PokemonView/ViewModel/PokemonListViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62">
-               </Location>
-               <Location
-                  uuid = "720B63A3-7CCA-487B-B27B-515214E39BEE - 5ac2a10338383574"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (PokemonView.PokemonSpecies) -&gt; () in PokemonView.PokemonListViewModel.fetchPokemonSpecies(speciesId: Swift.Int) -&gt; ()"
-                  moduleName = "PokemonView"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/stephenclark/Desktop/NewTestApps/PokemonView/PokemonView/ViewModel/PokemonListViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62">
-               </Location>
-               <Location
-                  uuid = "720B63A3-7CCA-487B-B27B-515214E39BEE - 6c2c8506797c59f4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 (PokemonView.PokemonSpecies) -&gt; () in PokemonView.PokemonListViewModel.fetchAndStorePokemonSpecies(url: Swift.String) -&gt; ()"
-                  moduleName = "PokemonView"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/ViewModel/PokemonListViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "62"
-                  endingLineNumber = "62">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "456216DB-C272-40B9-9C86-497354CD7A97"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PokemonView/ViewModel/PokemonListViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "fetchPokemonSpecies(speciesId:)"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "fetchAndStorePokemonDetails(url:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -315,6 +209,470 @@
             startingLineNumber = "50"
             endingLineNumber = "50"
             landmarkName = "fetchPokemonSpecies(speciesId:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "42475959-DCFA-435D-80EF-F3E9B3CC8758"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Networking/APIManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "fetchPokemonList(offset:limit:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FC893FBF-5B67-42B7-9D11-53BD0CFFD4D9"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Networking/APIManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "fetchPokemonList(offset:limit:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C5DB3699-5908-4912-AC23-1D97511AC3D0"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/ViewModel/PokemonListViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "fetchPokemonList()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C5943DF2-1C25-4346-99B9-4568574A2861"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Data/PokemonCacheManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "retrievePokemonList()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "021A9BE5-47BA-4FC9-9D52-AD3C9E22D175"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Data/PokemonCacheManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "retrievePokemonList()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "18343E34-A071-4FDC-9825-EFBB58F85C8A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Data/PokemonCacheManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "retrieveLastCacheDate()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "18343E34-A071-4FDC-9825-EFBB58F85C8A - 165027e2b5c84a6e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42">
+               </Location>
+               <Location
+                  uuid = "18343E34-A071-4FDC-9825-EFBB58F85C8A - 104d489cb0af35b9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PokemonView.PokemonCacheManager.retrieveLastCacheDate() -&gt; Swift.Optional&lt;Foundation.Date&gt;"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "41"
+                  endingLineNumber = "41">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4BE01422-450C-4EA0-9214-7F0FDD059549"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Data/PokemonCacheManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "savePokemonList(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4BE01422-450C-4EA0-9214-7F0FDD059549 - 12a51007b72e9c9b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "46"
+                  endingLineNumber = "46">
+               </Location>
+               <Location
+                  uuid = "4BE01422-450C-4EA0-9214-7F0FDD059549 - 165027e2b5c84af3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45">
+               </Location>
+               <Location
+                  uuid = "4BE01422-450C-4EA0-9214-7F0FDD059549 - 12a51007b72e9b7a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "45"
+                  endingLineNumber = "45">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "61E708A6-B1CD-43CE-8D34-B2F9F8846DC2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Data/PokemonCacheManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "savePokemonList(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "61E708A6-B1CD-43CE-8D34-B2F9F8846DC2 - 12a51007b72e9dd5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56">
+               </Location>
+               <Location
+                  uuid = "61E708A6-B1CD-43CE-8D34-B2F9F8846DC2 - 28ba6d8d321983d9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "57227F7F-DC31-46DF-AA5F-DB91B50FE4BC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Data/PokemonCacheManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "savePokemonDetail(_:for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "57227F7F-DC31-46DF-AA5F-DB91B50FE4BC - 25a80c32d35a3cda"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonDetail(_: PokemonView.PokemonDetail, for: Swift.String) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75">
+               </Location>
+               <Location
+                  uuid = "57227F7F-DC31-46DF-AA5F-DB91B50FE4BC - f115188f6956a274"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonDetail(_: PokemonView.PokemonDetail, for: Swift.String) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "75"
+                  endingLineNumber = "75">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F0DAB001-DD7C-486E-A706-796C27B24150"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Networking/APIManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
+            landmarkName = "fetchPokemonList(offset:limit:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "86C555CA-32B0-4937-BBDE-DBECF9A74C26"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Data/PokemonCacheManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "savePokemonList(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "86C555CA-32B0-4937-BBDE-DBECF9A74C26 - 28ba6d8d3219825d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52">
+               </Location>
+               <Location
+                  uuid = "86C555CA-32B0-4937-BBDE-DBECF9A74C26 - 12a51007b72e9d28"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FE37F3F2-9BF7-46C5-AD46-6AC3DD4E6C27"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/Data/PokemonCacheManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "savePokemonList(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FE37F3F2-9BF7-46C5-AD46-6AC3DD4E6C27 - 12a51007b72e9c1f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50">
+               </Location>
+               <Location
+                  uuid = "FE37F3F2-9BF7-46C5-AD46-6AC3DD4E6C27 - 28ba6d8d32198213"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50">
+               </Location>
+               <Location
+                  uuid = "FE37F3F2-9BF7-46C5-AD46-6AC3DD4E6C27 - 12a51007b72e9cfe"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Swift.MainActor () -&gt; () in PokemonView.PokemonCacheManager.savePokemonList(PokemonView.Pokemon) -&gt; ()"
+                  moduleName = "PokemonView"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/stephenclark/Documents/PythonCode/PokemonView/PokemonView/Data/PokemonCacheManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8EA34E1B-49A1-48FF-8DAB-3C74E8981085"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/PokemonViewApp.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "configureRealm()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0F8ED722-5BBD-4DBF-A95B-EA0648EC7267"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/ViewModel/PokemonListViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "fetchPokemonList()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DD15553B-7BE7-43F3-BD6C-959224AEB674"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/ViewModel/PokemonListViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "fetchPokemonList()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4DB664B5-8670-4474-B24C-C8F128A3D0EB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PokemonView/ViewModel/PokemonDetailViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "loadPokemonDetails(from:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

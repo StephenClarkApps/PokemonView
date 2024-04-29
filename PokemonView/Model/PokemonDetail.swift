@@ -15,10 +15,10 @@ import Foundation
 struct PokemonDetail: Codable {
     let id: Int
     let name: String
-    let cries: Cries
+    let cries: Cries?
     let height: Int
     let weight: Int
-    let sprites: Sprites
+    let sprites: Sprites?
     let stats: [Stat]
     let types: [TypeElement]
     
@@ -32,7 +32,37 @@ struct PokemonDetail: Codable {
         case stats
         case types
     }
+
+    // Convenience initializer to create a PokemonDetail from a PokemonDetailRealmObject
+    init(from realmObject: PokemonDetailRealmObject) {
+        self.id = realmObject.id
+        self.name = realmObject.name
+        self.cries = Cries(latest: realmObject.cries?.latest ?? "", legacy: realmObject.cries?.legacy ?? "")
+        self.height = realmObject.height
+        self.weight = realmObject.weight
+        self.sprites = Sprites(frontDefault: realmObject.sprites?.frontDefault ?? "",
+                               backDefault: realmObject.sprites?.backDefault ?? "")
+        
+        // Mapping stats
+        self.stats = realmObject.stats.compactMap { statObject in
+            guard let stat = statObject.stat else {
+                return Stat(baseStat: 0, stat: Species(name: "One", url: "http://www.google.com"))
+            }
+            return Stat(baseStat: statObject.baseStat, stat: Species(name: stat.name, url: stat.url))
+        }
+                
+        self.types = realmObject.types.compactMap { typeObject in
+            guard let type = typeObject.type else {
+                return TypeElement(slot: 0, type: Species(name: "One", url: "http://www.google.com"))
+            }
+            return TypeElement(slot: typeObject.slot, type: Species(name: type.name, url: type.url))
+        }
+
+    }
+
+
 }
+
 
 // MARK: - Sprites
 struct Sprites: Codable {

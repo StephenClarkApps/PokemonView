@@ -7,7 +7,9 @@
 
 import Combine
 import Foundation
+import RealmSwift
 
+@MainActor
 class PokemonListViewModel: ObservableObject {
     
     @Published var pokemonList: [IndividualPokemon] = []
@@ -19,12 +21,20 @@ class PokemonListViewModel: ObservableObject {
     @Published var hasMoreData: Bool = true
     @Published var requestSucceeded: Bool = true  // To handle request status
     
-    private let apiManager: APIManagerProtocol
+    private let apiManager: PokemonAPIManagerProtocol
     private var cancellables: Set<AnyCancellable> = []
     
-    init(apiManager: APIManagerProtocol) {
+    private var realm: Realm?
+
+    init(apiManager: PokemonAPIManagerProtocol) {
         self.apiManager = apiManager
+        do {
+            self.realm = try Realm()
+        } catch {
+            print("Error initializing Realm: \(error)")
+        }
     }
+
     
     func fetchPokemonList() {
         guard !isLoading else { return }
@@ -33,34 +43,61 @@ class PokemonListViewModel: ObservableObject {
 
         apiManager.fetchPokemonList(offset: 0, limit: limit)
             .sink(receiveCompletion: { [weak self] completion in
-                self?.isLoading = false
-                if case .failure(let error) = completion {
-                    print("Error fetching Pokémon list: \(error)")
-                    self?.requestSucceeded = false
+                DispatchQueue.main.async {
+                    self?.isLoading = false
+                    if case .failure(let error) = completion {
+                        print("Error fetching Pokémon list: \(error)")
+                        self?.requestSucceeded = false
+                    }
                 }
             }, receiveValue: { [weak self] response in
-                self?.pokemonList = response.results
-                self?.filteredPokemon = response.results
-                self?.hasMoreData = false  // No more data to fetch as we've got all Pokémon.
+                DispatchQueue.main.async {
+                    // Perform Realm operations here directly on the main thread
+                    self?.updateRealm(with: response.results)
+                    self?.hasMoreData = false  // No more data to fetch as we've got all Pokémon.
+                }
             })
             .store(in: &cancellables)
     }
-    
 
-    func fetchAndStorePokemonSpecies(url: String) {
-        fetchPokemonSpecies(url: url)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    print("Successfully fetched Pokémon details.")
-                case .failure(let error):
-                    print("Error fetching Pokémon details: \(error)")
+//    func updateRealm(with results: [IndividualPokemon]) {
+//        // Perform Realm operations here to store or update Pokémon data
+//        guard let realm = self.realm else {
+//            print("Realm not initialized")
+//            return
+//        }
+//        do {
+//            try realm.write {
+//                // Clear the previous data
+//                realm.deleteAll()
+//                // Add or update the new data
+//                let realmObjects = results.map { IndividualPokemonRealmObject(from: $0) }
+//                realm.add(realmObjects)
+//            }
+//        } catch {
+//            print("Error updating Realm: \(error)")
+//        }
+//    }
+
+    
+    func updateRealm(with results: [IndividualPokemon]) {
+        guard let realm = self.realm else {
+            print("Realm not initialized")
+            return
+        }
+        do {
+            try realm.write {
+                realm.deleteAll()
+                let realmObjects = results.map { IndividualPokemonRealmObject(from: $0) }
+                realm.add(realmObjects)
+                DispatchQueue.main.async {
+                    self.pokemonList = results
+                    self.filteredPokemon = results
                 }
-            }, receiveValue: { [weak self] details in
-                self?.pokemonSpecies = details
-                print("Details updated for Pokémon: \(details)")
-            })
-            .store(in: &cancellables)
+            }
+        } catch {
+            print("Error updating Realm: \(error)")
+        }
     }
 
     
@@ -94,9 +131,4 @@ class PokemonListViewModel: ObservableObject {
             .eraseToAnyPublisher()
     }
     
-    func fetchPokemonSpecies(url: String) -> AnyPublisher<PokemonSpecies, Error> {
-        return apiManager.fetchPokemonSpecies(url: url)
-            .receive(on: DispatchQueue.main)
-            .eraseToAnyPublisher()
-    }
 }

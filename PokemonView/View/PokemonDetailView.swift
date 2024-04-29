@@ -64,10 +64,10 @@ struct PokemonDetailView: View {
                             Spacer()
                             Button(action: {
                                 print("Pokemon image tapped")
-                                AudioManager.shared.playPokemonCry(legacyUrl: details.cries.legacy, latestUrl: details.cries.latest)
+                                AudioManager.shared.playPokemonCry(legacyUrl: details.cries?.legacy ?? "", latestUrl: details.cries?.latest ?? "")
                             }) {
                                 
-                                CustomAsyncImage(url: URL(string: details.sprites.frontDefault)!) {
+                                CustomAsyncImage(url: URL(string: details.sprites?.frontDefault ?? "")!) {
                                     AnyView(Text("Loading...")  // Wrap the placeholder in AnyView
                                         .frame(width: 100, height: 100)
                                         .background(Color.gray.opacity(0.3))
@@ -140,5 +140,6 @@ struct PokemonDetailView: View {
 
 // MARK: - PREVIEW
 #Preview {
-    PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: APIManager()), pokemonURL: "https://pokeapi.co/api/v2/pokemon/1/")
+    PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: APIManager(cacheManager: PokemonCacheManager())),
+                      pokemonURL: "https://pokeapi.co/api/v2/pokemon/1/")
 }

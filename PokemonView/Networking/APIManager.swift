@@ -5,64 +5,72 @@
 //  Created by Stephen Clark on 23/04/2024.
 //
 
+/// Class that Manages the apps interaction with the backend API service
 import Combine
 import Foundation
 
 /// Class that Manages the apps interaction with the backend API service
-class APIManager: APIManagerProtocol {
+class APIManager: PokemonAPIManagerProtocol {
     
+//    func fetchPokemonSpecies(url: String) -> AnyPublisher<PokemonSpecies, any Error> {
+//        // NADA
+//    }
+//    
+    private let cacheManager: PokemonCacheManagerProtocol
     
-    // TODO: - Due to the required functionality, we will likely be fetching all the Poké up front
-    // and we will probably cache them with something like SwiftData or Realm
+    init(cacheManager: PokemonCacheManagerProtocol) {
+        self.cacheManager = cacheManager
+    }
     
-    
-    /// Fetches a list of Pokemon from the API with optional pagination.
-    /// - Parameters:
-    ///   - offset: The number of items to skip before starting to collect the result set.
-    ///   - limit: The maximum number of items to return.
-    /// - Returns: A publisher that emits a `Pokemon` object or an error.
     func fetchPokemonList(offset: Int = 0, limit: Int = 20) -> AnyPublisher<Pokemon, Error> {
+        if let cachedPokemonList = cacheManager.retrievePokemonList(), !isCacheExpired() {
+            return Just(cachedPokemonList)
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        
         let url = URL(string: "\(Constants.API.baseURL)\(Constants.API.Endpoints.pokemonList)?offset=\(offset)&limit=\(limit)")!
         
         return URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: Pokemon.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
+            .map { [weak self] pokemonList in
+                self?.cacheManager.savePokemonList(pokemonList)
+                return pokemonList
+            }
             .eraseToAnyPublisher()
     }
     
-    /// Fetches detailed information about a specific Pokemon from the API.
-    /// - Parameter url: The URL to fetch Pokemon details.
-    /// - Returns: A publisher that emits `PokemonDetail` object or an error.
     func fetchPokemonDetails(url: String) -> AnyPublisher<PokemonDetail, Error> {
         guard let url = URL(string: url) else {
-            fatalError("Invalid URL")
+            return Fail(error: URLError(.badURL))
+                .eraseToAnyPublisher()
         }
-        print("Fetching details from URL: \(url)")
+        
+        if let cachedPokemonDetail = cacheManager.retrievePokemonDetail(for: url.absoluteString), !isCacheExpired() {
+            return Just(cachedPokemonDetail)
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        
         return URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: PokemonDetail.self, decoder: JSONDecoder())
-            .handleEvents(receiveOutput: { response in
-                print("Received response: \(response)")
-            })
-            .receive(on: DispatchQueue.main)
+            .map { [weak self] pokemonDetail in
+                self?.cacheManager.savePokemonDetail(pokemonDetail, for: url.absoluteString)
+                return pokemonDetail
+            }
             .eraseToAnyPublisher()
     }
     
+    // Add other methods as needed
     
-    /// Fetches detailed information about a specific Pokemon species from the API.
-      /// - Parameter URL: URL
-      /// - Returns: A publisher that emits `PokemonSpecies` object or an error.
-      func fetchPokemonSpecies(url: String) -> AnyPublisher<PokemonSpecies, Error> {
-          let urlString = url
-          guard let url = URL(string: urlString) else {
-              fatalError("Invalid URL for Pokemon species")
-          }
-          
-          return URLSession.shared.dataTaskPublisher(for: url)
-              .map(\.data)
-              .decode(type: PokemonSpecies.self, decoder: JSONDecoder())
-              .receive(on: DispatchQueue.main)
-              .eraseToAnyPublisher()
-      }
+    func isCacheExpired() -> Bool {
+        guard let lastCacheDate = cacheManager.retrieveLastCacheDate() else {
+            return true // Cache doesn't exist, need to fetch from API
+        }
+        let currentDate = Date()
+        let timeInterval = currentDate.timeIntervalSince(lastCacheDate)
+        return timeInterval > 24 * 60 * 60 // 24 hours in seconds
+    }
 }

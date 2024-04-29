@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PokemonListView: View {
     @StateObject var viewModel: PokemonListViewModel
-    let apiManager: APIManagerProtocol
+    let apiManager: PokemonAPIManagerProtocol
     @State private var searchText: String = ""
     @State private var selectedPokemon: IndividualPokemon?
 
@@ -72,14 +72,9 @@ struct PokemonListView: View {
                                     .modifier(AdaptiveText())
                             }
                         }
-                        .id(pokemon.id)  // unique identifier
+                        .id(pokemon.id)
                         .accessibilityLabel("\(pokemon.name.capitalized), tap for details")
                         .accessibilityHint("Double-tap to view more details about \(pokemon.name.capitalized)")
-                        .onAppear {
-                            if pokemon == viewModel.filteredPokemon.last && viewModel.hasMoreData {
-                                viewModel.fetchPokemonList()
-                            }
-                        }
                     } //: LIST
                     
                     VStack {
@@ -107,7 +102,7 @@ struct PokemonListView: View {
             } //: ScrollViewReader
         } //: VSTACK
         .onAppear {
-            if viewModel.pokemonList.isEmpty {
+            if viewModel.pokemonList.isEmpty || apiManager.isCacheExpired() {
                 viewModel.fetchPokemonList()
             }
         }
@@ -124,7 +119,7 @@ struct PokemonListView: View {
 
 
 
-let apiManForPrev = APIManager()
+let apiManForPrev = APIManager(cacheManager: PokemonCacheManager())
 #Preview {
     PokemonListView(viewModel: PokemonListViewModel(apiManager: apiManForPrev), apiManager: apiManForPrev)
 }
