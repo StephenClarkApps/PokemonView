@@ -9,11 +9,18 @@ import Foundation
 
 // MARK: - Pokemon
 struct Pokemon: Codable {
-    let count: Int
-    let next: String?
-    let previous: String?
-    let results: [IndividualPokemon]
+    var count: Int
+    var next: String?
+    var previous: String?
+    var results: [IndividualPokemon]
 
+    init(count: Int, next: String, previous: String, results: [IndividualPokemon]) {
+        self.count = count
+        self.next = next
+        self.previous = previous
+        self.results = results
+    }
+    
     // Convenience initializer to create a Pokemon from a PokemonRealmObject
     init(from realmObject: PokemonRealmObject) {
         self.count = realmObject.count
@@ -24,14 +31,33 @@ struct Pokemon: Codable {
 }
 
 // MARK: - IndividualPokemon
-struct IndividualPokemon: Codable, Identifiable, Hashable {
-    var id: String { url }
-    let name: String
-    let url: String
 
-    // Convenience initializer to create an IndividualPokemon from an IndividualPokemonRealmObject
+struct IndividualPokemon: Codable, Identifiable {
+    var id: String { extractPokemonID(from: url) }
+    var name: String
+    var url: String
+    var spriteUrl: String {
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/\(id).png"
+    }
+
+    init(name: String, url: String) {
+        self.name = name
+        self.url = url
+//        self.id = extractPokemonID(from: url)
+    }
+    
     init(from realmObject: IndividualPokemonRealmObject) {
         self.name = realmObject.name
         self.url = realmObject.url
+//        self.id = extractPokemonID(from: url)
     }
+}
+
+
+func extractPokemonID(from url: String) -> String {
+    let components = url.trimmingCharacters(in: CharacterSet(charactersIn: "/")).split(separator: "/")
+    if let lastComponent = components.last {
+        return String(lastComponent)
+    }
+    return ""
 }

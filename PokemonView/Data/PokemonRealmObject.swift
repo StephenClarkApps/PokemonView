@@ -35,15 +35,16 @@ class PokemonRealmObject: Object {
 
 // MARK: - IndividualPokemon
 class IndividualPokemonRealmObject: Object {
-    @Persisted(primaryKey: true) var id: String
+    @Persisted(primaryKey: true) var url: String
     @Persisted var name: String
-    @Persisted var url: String
+    @Persisted var sprite: String?
 
-    // Convenience initializer to create an IndividualPokemonRealmObject from an IndividualPokemon
-    convenience init(from individualPokemon: IndividualPokemon) {
+    convenience init(from pokemon: IndividualPokemon) {
         self.init()
-        self.id = individualPokemon.id
-        self.name = individualPokemon.name
-        self.url = individualPokemon.url
+        self.url = pokemon.url
+        self.name = pokemon.name
+        self.sprite = pokemon.spriteUrl 
     }
 }
+
+

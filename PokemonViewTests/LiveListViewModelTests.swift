@@ -9,13 +9,16 @@ import XCTest
 import Combine
 @testable import PokemonView
 
+@MainActor 
 class LiveListViewModelTests: XCTestCase {
 
     var viewModel: PokemonListViewModel!
     var cancellables: Set<AnyCancellable> = []
 
     override func setUpWithError() throws {
-        viewModel = PokemonListViewModel(apiManager: APIManager())
+        let realmProvider = DefaultRealmProvider()
+        let someCacheManager = PokemonCacheManager(realmProvider: realmProvider)
+        viewModel = PokemonListViewModel(apiManager: APIManager(cacheManager: someCacheManager))
     }
 
     override func tearDownWithError() throws {

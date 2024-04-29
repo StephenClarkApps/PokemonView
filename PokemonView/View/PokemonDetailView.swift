@@ -139,7 +139,11 @@ struct PokemonDetailView: View {
 }
 
 // MARK: - PREVIEW
+let realmProviderX = DefaultRealmProvider()
+let cacheManagerX = PokemonCacheManager(realmProvider: realmProviderX)
+let apiManForPrevX = APIManager(cacheManager: cacheManager)
 #Preview {
-    PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: APIManager(cacheManager: PokemonCacheManager())),
+
+    PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: apiManForPrevX),
                       pokemonURL: "https://pokeapi.co/api/v2/pokemon/1/")
 }

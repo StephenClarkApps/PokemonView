@@ -23,7 +23,7 @@ class APIManager: PokemonAPIManagerProtocol {
     }
     
     func fetchPokemonList(offset: Int = 0, limit: Int = 20) -> AnyPublisher<Pokemon, Error> {
-        if let cachedPokemonList = cacheManager.retrievePokemonList(), !isCacheExpired() {
+        if let cachedPokemonList = cacheManager.retrievePokemonList() { // , !isCacheExpired() {
             return Just(cachedPokemonList)
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
@@ -46,31 +46,41 @@ class APIManager: PokemonAPIManagerProtocol {
             return Fail(error: URLError(.badURL))
                 .eraseToAnyPublisher()
         }
-        
-        if let cachedPokemonDetail = cacheManager.retrievePokemonDetail(for: url.absoluteString), !isCacheExpired() {
-            return Just(cachedPokemonDetail)
+
+        // Check cache first
+        if let cachedDetail = cacheManager.retrievePokemonDetail(for: url.absoluteString) {  //, !isCacheExpired() {
+            print("fetching pokemon details from the Realm Cache: \(url.absoluteString)")
+            return Just(cachedDetail)
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }
-        
+
+        print("fetching pokemon details from the Network: \(url.absoluteString)")
+
+        // Fetch from network
         return URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: PokemonDetail.self, decoder: JSONDecoder())
-            .map { [weak self] pokemonDetail in
+            .handleEvents(receiveOutput: { [weak self] pokemonDetail in
                 self?.cacheManager.savePokemonDetail(pokemonDetail, for: url.absoluteString)
-                return pokemonDetail
-            }
+            })
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+
+
     
     // Add other methods as needed
     
-    func isCacheExpired() -> Bool {
-        guard let lastCacheDate = cacheManager.retrieveLastCacheDate() else {
-            return true // Cache doesn't exist, need to fetch from API
-        }
-        let currentDate = Date()
-        let timeInterval = currentDate.timeIntervalSince(lastCacheDate)
-        return timeInterval > 24 * 60 * 60 // 24 hours in seconds
-    }
+//    func isCacheExpired() -> Bool {
+//        print("isCacheExpired")
+//        guard let lastCacheDate = cacheManager.retrieveLastCacheDate() else {
+//            print("Cache doesn't exist, need to fetch from API")
+//            return true // Cache doesn't exist, need to fetch from API
+//        }
+//        // Determine if it's been over 24 hours since we last cached data
+//        let currentDate = Date()
+//        let timeInterval = currentDate.timeIntervalSince(lastCacheDate)
+//        return timeInterval > 24 * 60 * 60 // 24 hours in seconds
+//    }
 }

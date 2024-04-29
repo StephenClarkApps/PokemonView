@@ -8,47 +8,60 @@
 import Foundation
 import RealmSwift
 
-class PokemonCacheManager: PokemonCacheManagerProtocol {
-    private var realm: Realm!
-    
-    init() {
+protocol RealmProvider {
+    var realm: Realm { get }
+}
+
+class DefaultRealmProvider: RealmProvider {
+    var realm: Realm {
         do {
-            realm = try Realm()
+            return try Realm()
         } catch {
             fatalError("Failed to initialize Realm: \(error)")
         }
     }
+}
+
+
+class PokemonCacheManager: PokemonCacheManagerProtocol {
+    
+    private let realmProvider: RealmProvider
+        
+        init(realmProvider: RealmProvider) {
+            self.realmProvider = realmProvider
+        }
     
     func retrievePokemonList() -> Pokemon? {
-        guard let cachedPokemonObject = realm.objects(PokemonRealmObject.self).first else {
+        guard let cachedPokemonObject = realmProvider.realm.objects(PokemonRealmObject.self).first else {
             return nil
         }
-        
-        return Pokemon(from: cachedPokemonObject)
-    }
-    
-    func retrievePokemonDetail(for url: String) -> PokemonDetail? {
-        guard let id = extractIDFromURL(url),
-              let cachedPokemonDetailObject = realm.objects(PokemonDetailRealmObject.self).filter("id == %@", id).first else {
-            return nil
-        }
-        
-        return PokemonDetail(from: cachedPokemonDetailObject)
+        let pokemon = Pokemon(from: cachedPokemonObject)
+        print("Retrieved Pokemon List from Realm: \(pokemon)")
+        return pokemon
     }
 
-    
-    func retrieveLastCacheDate() -> Date? {
-        return realm.objects(PokemonRealmObject.self).first?.metadata?.createdAt
+    func retrievePokemonDetail(for url: String) -> PokemonDetail? {
+        guard let id = extractIDFromURL(url),
+              let cachedPokemonDetailObject = realmProvider.realm.objects(PokemonDetailRealmObject.self).filter("id == %@", id).first else {
+            return nil
+        }
+        let pokemonDetail = PokemonDetail(from: cachedPokemonDetailObject)
+        print("Retrieved Pokemon Detail from Realm: \(pokemonDetail)")
+        return pokemonDetail
     }
-    
+
+    func retrieveLastCacheDate() -> Date? {
+        let cacheDate = realmProvider.realm.objects(PokemonRealmObject.self).first?.metadata?.createdAt
+        print("Retrieved Last Cache Date from Realm: \(cacheDate)")
+        return cacheDate
+    }
+
     func savePokemonList(_ pokemonList: Pokemon) {
         DispatchQueue.main.async {
             let cachedPokemonObject = PokemonRealmObject(from: pokemonList)
+            print("Saving Pokemon List to Realm: \(cachedPokemonObject)")
             do {
-                guard let realm = self.realm else {
-                    print("Realm not initialized")
-                    return
-                }
+                let realm = self.realmProvider.realm // Access realm directly from realmProvider
                 try realm.write {
                     // Clear the previous data
                     realm.deleteAll()
@@ -61,16 +74,12 @@ class PokemonCacheManager: PokemonCacheManagerProtocol {
         }
     }
 
-    
     func savePokemonDetail(_ pokemonDetail: PokemonDetail, for url: String) {
         DispatchQueue.main.async {
-            
             let cachedPokemonDetailObject = PokemonDetailRealmObject(from: pokemonDetail)
+            print("Saving Pokemon Detail to Realm: \(cachedPokemonDetailObject)")
             do {
-                guard let realm = self.realm else {
-                    print("Realm not initialized")
-                    return
-                }
+                let realm = self.realmProvider.realm // Access realm directly from realmProvider
                 try realm.write {
                     realm.add(cachedPokemonDetailObject, update: .modified)
                 }
@@ -79,6 +88,26 @@ class PokemonCacheManager: PokemonCacheManagerProtocol {
             }
         }
     }
+
+
+    func clearCache() {
+        DispatchQueue.main.async {
+            do {
+                let realm = self.realmProvider.realm
+                try realm.write {
+                    realm.deleteAll()
+                }
+            } catch {
+                print("Failed to clear cache: \(error)")
+            }
+        }
+    }
+
+    func refreshData() {
+        cacheManager.clearCache()
+        retrievePokemonList()
+    }
+
 }
 
 

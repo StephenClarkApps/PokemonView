@@ -50,6 +50,7 @@
 		86E423312BDFC9980055A402 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 86E423302BDFC9980055A402 /* RealmSwift */; };
 		86E423332BDFCA300055A402 /* PokemonRealmObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E423322BDFCA300055A402 /* PokemonRealmObject.swift */; };
 		86E423352BDFCD590055A402 /* PokemonCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E423342BDFCD580055A402 /* PokemonCacheManager.swift */; };
+		86E423372BDFF9790055A402 /* RealmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E423362BDFF9790055A402 /* RealmTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +112,7 @@
 		86E4232C2BDFC8FD0055A402 /* PokemonDetailRealmObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonDetailRealmObject.swift; sourceTree = "<group>"; };
 		86E423322BDFCA300055A402 /* PokemonRealmObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonRealmObject.swift; sourceTree = "<group>"; };
 		86E423342BDFCD580055A402 /* PokemonCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonCacheManager.swift; sourceTree = "<group>"; };
+		86E423362BDFF9790055A402 /* RealmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 		863FB7632BD69F00002FF098 /* PokemonViewTests */ = {
 			isa = PBXGroup;
 			children = (
+				86E423362BDFF9790055A402 /* RealmTests.swift */,
 				86E423192BDC0FCE0055A402 /* AudioMangerTests.swift */,
 				86E4231B2BDC0FE20055A402 /* ExtensionsTests.swift */,
 				863FB7922BD7293D002FF098 /* LiveListViewModelTests.swift */,
@@ -476,6 +479,7 @@
 				86E4231C2BDC0FE20055A402 /* ExtensionsTests.swift in Sources */,
 				86E4231A2BDC0FCE0055A402 /* AudioMangerTests.swift in Sources */,
 				863FB7812BD719B7002FF098 /* MockApiManager.swift in Sources */,
+				86E423372BDFF9790055A402 /* RealmTests.swift in Sources */,
 				863FB7932BD7293D002FF098 /* LiveListViewModelTests.swift in Sources */,
 				863FB7652BD69F00002FF098 /* PokemonViewTests.swift in Sources */,
 			);

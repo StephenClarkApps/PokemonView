@@ -32,6 +32,17 @@ struct PokemonDetail: Codable {
         case stats
         case types
     }
+    
+    init(id: Int, name: String, cries: Cries?, height: Int, weight: Int, sprites: Sprites?, stats: [Stat], types: [TypeElement]) {
+        self.id = id
+        self.name = name
+        self.cries = cries
+        self.height = height
+        self.weight = weight
+        self.sprites = sprites
+        self.stats = stats
+        self.types = types
+    }
 
     // Convenience initializer to create a PokemonDetail from a PokemonDetailRealmObject
     init(from realmObject: PokemonDetailRealmObject) {

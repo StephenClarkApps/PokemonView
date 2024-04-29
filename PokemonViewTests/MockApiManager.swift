@@ -11,7 +11,12 @@ import Foundation
 
 /// A mock API manager for testing that conforms to the APIManagerProtocol.
 /// This class is used to simulate network responses for the purposes of unit testing.
-class MockAPIManager: APIManagerProtocol {
+class MockAPIManager: PokemonAPIManagerProtocol {
+    
+//    func isCacheExpired() -> Bool {
+//        return false
+//    }
+    
     
     
     // Could use to simulate error as needed 

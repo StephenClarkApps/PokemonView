@@ -61,30 +61,35 @@ struct PokemonListView: View {
             
             ScrollViewReader { scrollViewProxy in
                 ZStack {
-                    List(viewModel.filteredPokemon, id: \.self) { pokemon in
-                        Button(action: {
-                            self.selectedPokemon = pokemon
-                        }) {
-                            HStack {
-                                Image("icnPokemon").resizable().frame(width: 40, height: 40, alignment: .leading).padding().border(.black, width: 2.0)
-                                Spacer().frame(width: 10)
-                                Text(pokemon.name.capitalized)
-                                    .modifier(AdaptiveText())
+                    List(viewModel.filteredPokemon, id: \.id) { pokemon in
+                        HStack {
+                            CustomAsyncImage(url: URL(string: pokemon.spriteUrl)!) {
+                                ProgressView()
                             }
+                            .frame(width: 40, height: 40)
+                            .cornerRadius(20)
+
+                            Text(pokemon.name.capitalized)
+                                .modifier(AdaptiveText())
                         }
-                        .id(pokemon.id)
-                        .accessibilityLabel("\(pokemon.name.capitalized), tap for details")
-                        .accessibilityHint("Double-tap to view more details about \(pokemon.name.capitalized)")
-                    } //: LIST
+                        .onTapGesture {
+                            selectedPokemon = pokemon
+                        }
+                    }
+                    .refreshable {
+                        viewModel.clearCacheAndFetchPokemonList()
+                    }
+                    .sheet(item: $selectedPokemon) { pokemon in
+                        PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: apiManager), pokemonURL: pokemon.url)
+                    }
+
                     
                     VStack {
                         Spacer()
                         HStack {
                             Spacer()
                             Button("Scroll to Top") {
-                                // withAnimation {
-                                scrollViewProxy.scrollTo(viewModel.filteredPokemon.first?.id, anchor: .top)
-                                // }
+                                scrollViewProxy.scrollTo(0, anchor: .top)
                             }
                             .accessibilityLabel("Scroll to the top of the List of Pokemon")
                             .padding(5)
@@ -96,13 +101,10 @@ struct PokemonListView: View {
                         }//: HStack
                     }
                 }
-                .sheet(item: $selectedPokemon) { pokemon in
-                    PokemonDetailView(viewModel: PokemonDetailViewModel(apiManager: apiManager), pokemonURL: pokemon.url)
-                }
             } //: ScrollViewReader
         } //: VSTACK
         .onAppear {
-            if viewModel.pokemonList.isEmpty || apiManager.isCacheExpired() {
+            if viewModel.pokemonList.isEmpty { //|| apiManager.isCacheExpired() {
                 viewModel.fetchPokemonList()
             }
         }
@@ -114,12 +116,14 @@ struct PokemonListView: View {
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
+    
 }
 
 
 
-
-let apiManForPrev = APIManager(cacheManager: PokemonCacheManager())
+let realmProvider = DefaultRealmProvider()
+let cacheManager = PokemonCacheManager(realmProvider: realmProvider)
+let apiManForPrev = APIManager(cacheManager: cacheManager)
 #Preview {
     PokemonListView(viewModel: PokemonListViewModel(apiManager: apiManForPrev), apiManager: apiManForPrev)
 }

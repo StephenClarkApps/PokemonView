@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 
 struct ContentView: View {
-    let apiManager = APIManager(cacheManager: PokemonCacheManager()) // Single instance created here
+    let apiManager = APIManager(cacheManager: PokemonCacheManager(realmProvider: DefaultRealmProvider())) 
 
     init() {
        // PVAppearance.setUpApperance()

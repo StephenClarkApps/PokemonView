@@ -35,6 +35,31 @@ class PokemonListViewModel: ObservableObject {
         }
     }
 
+//    func fetchPokemonDetailsIfNeeded(for pokemon: IndividualPokemon) {
+//        guard pokemon.spriteUrl == nil || pokemon.spriteUrl.isEmpty, !isLoading else { return }
+//        isLoading = true
+//
+//        apiManager.fetchPokemonDetails(url: pokemon.url)
+//            .receive(on: DispatchQueue.main)
+//            .sink(receiveCompletion: { [weak self] completion in
+//                self?.isLoading = false
+//                if case .failure(let error) = completion {
+//                    print("Error fetching Pokémon details: \(error)")
+//                }
+//            }, receiveValue: { [weak self] detail in
+//                if let spriteUrl = detail.sprites?.frontDefault {
+//                    self?.updatePokemonSprite(for: pokemon.id, with: spriteUrl)
+//                }
+//            })
+//            .store(in: &cancellables)
+//    }
+//    
+//
+//    private func updatePokemonSprite(for id: String, with spriteUrl: String?) {
+//        guard let index = pokemonList.firstIndex(where: { $0.id == id }) else { return }
+//        pokemonList[index].spriteUrl = spriteUrl
+//    }
+
     
     func fetchPokemonList() {
         guard !isLoading else { return }
@@ -60,26 +85,6 @@ class PokemonListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-//    func updateRealm(with results: [IndividualPokemon]) {
-//        // Perform Realm operations here to store or update Pokémon data
-//        guard let realm = self.realm else {
-//            print("Realm not initialized")
-//            return
-//        }
-//        do {
-//            try realm.write {
-//                // Clear the previous data
-//                realm.deleteAll()
-//                // Add or update the new data
-//                let realmObjects = results.map { IndividualPokemonRealmObject(from: $0) }
-//                realm.add(realmObjects)
-//            }
-//        } catch {
-//            print("Error updating Realm: \(error)")
-//        }
-//    }
-
-    
     func updateRealm(with results: [IndividualPokemon]) {
         guard let realm = self.realm else {
             print("Realm not initialized")
@@ -129,6 +134,20 @@ class PokemonListViewModel: ObservableObject {
         return apiManager.fetchPokemonDetails(url: url)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
+    }
+    
+    func clearCacheAndFetchPokemonList() {
+        // Clear here
+        filteredPokemon = []
+        pokemonList = []
+        pokemonDetails = nil
+        pokemonSpecies = nil
+        
+        // Clear cache
+        cacheManager.clearCache()
+
+        // Fetch fresh data
+        fetchPokemonList()
     }
     
 }
