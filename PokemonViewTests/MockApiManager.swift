@@ -13,12 +13,6 @@ import Foundation
 /// This class is used to simulate network responses for the purposes of unit testing.
 class MockAPIManager: PokemonAPIManagerProtocol {
     
-//    func isCacheExpired() -> Bool {
-//        return false
-//    }
-    
-    
-    
     // Could use to simulate error as needed 
     var shouldReturnError = false
     

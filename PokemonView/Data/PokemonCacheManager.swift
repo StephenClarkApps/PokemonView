@@ -22,7 +22,6 @@ class DefaultRealmProvider: RealmProvider {
     }
 }
 
-
 class PokemonCacheManager: PokemonCacheManagerProtocol {
     
     private let realmProvider: RealmProvider
@@ -39,8 +38,9 @@ class PokemonCacheManager: PokemonCacheManagerProtocol {
         print("Retrieved Pokemon List from Realm: \(pokemon)")
         return pokemon
     }
-
+    
     func retrievePokemonDetail(for url: String) -> PokemonDetail? {
+        
         guard let id = extractIDFromURL(url),
               let cachedPokemonDetailObject = realmProvider.realm.objects(PokemonDetailRealmObject.self).filter("id == %@", id).first else {
             return nil
@@ -48,6 +48,7 @@ class PokemonCacheManager: PokemonCacheManagerProtocol {
         let pokemonDetail = PokemonDetail(from: cachedPokemonDetailObject)
         print("Retrieved Pokemon Detail from Realm: \(pokemonDetail)")
         return pokemonDetail
+        
     }
 
     func retrieveLastCacheDate() -> Date? {
@@ -66,7 +67,7 @@ class PokemonCacheManager: PokemonCacheManagerProtocol {
                     // Clear the previous data
                     realm.deleteAll()
                     // Add or update the new data
-                    realm.add(cachedPokemonObject, update: .modified)
+                    realm.add(cachedPokemonObject, update: .all)
                 }
             } catch {
                 print("Failed to save Pokemon list to Realm: \(error)")

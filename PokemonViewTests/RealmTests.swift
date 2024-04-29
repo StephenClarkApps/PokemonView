@@ -24,6 +24,7 @@ class PokemonCacheManagerTests: XCTestCase {
     }
     
     func testSaveAndRetrievePokemonList() {
+
         // Create a test Pokemon list
         let testPokemon = Pokemon(count: 10, next: "https://test.com", previous: "http://www.google.com", results: [
             IndividualPokemon(name: "Test1", url: "https://test.com/1"),
@@ -44,8 +45,8 @@ class PokemonCacheManagerTests: XCTestCase {
 
     
     func testSaveAndRetrievePokemonDetail() {
+
         // Create a test Pokemon detail
-//        let testDetail = PokemonDetail(name: "Test", height: 1, weight: 1, sprites: Sprites(frontDefault: "", backDefault: ""))
         let testDetail = PokemonDetail(id: 1, name: "Buzz", cries: nil, height: 20, weight: 10, sprites: nil, stats: [], types: [])
         let testUrl = "https://test.com"
         cacheManager.savePokemonDetail(testDetail, for: testUrl)
@@ -83,12 +84,26 @@ class PokemonCacheManagerTests: XCTestCase {
         let realmObject = PokemonRealmObject()
         realmObject.count = 10
         realmObject.next = "https://test.com"
-        realmObject.previous = nil
-        realmObject.results.append(objectsIn: [
-            IndividualPokemonRealmObject(from: IndividualPokemon(name: "Test1", url: "https://test.com/1")),
-            IndividualPokemonRealmObject(from: IndividualPokemon(name: "Test2", url: "https://test.com/2"))
+        realmObject.previous = "https://www.something.net"
+        realmObject.metadata = PokemonListMetadata()
+        
+        // Create IndividualPokemonRealmObject instances
+        let individualPokemon1 = IndividualPokemonRealmObject()
+        individualPokemon1.name = "Test1"
+        individualPokemon1.url = "https://test.com/1"
+        individualPokemon1.sprite = "https://test.com/123"
+        
+        let individualPokemon2 = IndividualPokemonRealmObject()
+        individualPokemon2.name = "Test2"
+        individualPokemon2.url = "https://test.com/2"
+        individualPokemon2.sprite = "https://test.com/123"
 
-        ])
+        
+        // Append IndividualPokemonRealmObject instances to results
+        realmObject.results.append(individualPokemon1)
+        realmObject.results.append(individualPokemon2)
+
+        // Write the Realm object
         try! realmProvider.realm.write {
             realmProvider.realm.add(realmObject)
         }
@@ -99,8 +114,15 @@ class PokemonCacheManagerTests: XCTestCase {
         XCTAssertEqual(convertedPokemon?.count, realmObject.count)
         XCTAssertEqual(convertedPokemon?.next, realmObject.next)
         XCTAssertEqual(convertedPokemon?.previous, realmObject.previous)
+        
+        // Check if results are properly populated
         XCTAssertEqual(convertedPokemon?.results.count, realmObject.results.count)
+        XCTAssertEqual(convertedPokemon?.results[0].name, individualPokemon1.name)
+        XCTAssertEqual(convertedPokemon?.results[0].url, individualPokemon1.url)
+        XCTAssertEqual(convertedPokemon?.results[1].name, individualPokemon2.name)
+        XCTAssertEqual(convertedPokemon?.results[1].url, individualPokemon2.url)
     }
+
 
 
 

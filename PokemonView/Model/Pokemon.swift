@@ -32,7 +32,7 @@ struct Pokemon: Codable {
 
 // MARK: - IndividualPokemon
 
-struct IndividualPokemon: Codable, Identifiable {
+struct IndividualPokemon: Codable, Identifiable, Hashable {
     var id: String { extractPokemonID(from: url) }
     var name: String
     var url: String
@@ -43,13 +43,11 @@ struct IndividualPokemon: Codable, Identifiable {
     init(name: String, url: String) {
         self.name = name
         self.url = url
-//        self.id = extractPokemonID(from: url)
     }
     
     init(from realmObject: IndividualPokemonRealmObject) {
         self.name = realmObject.name
         self.url = realmObject.url
-//        self.id = extractPokemonID(from: url)
     }
 }
 

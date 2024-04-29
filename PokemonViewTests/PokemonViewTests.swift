@@ -94,35 +94,6 @@ class PokemonListViewModelTests: XCTestCase {
         expectation.fulfill()
 
         wait(for: [expectation], timeout: 1.0)
-    }
-
-    // FETCHING AND STORING POKEMON SPECIES
-
-//    func testFetchPokemonSpecies_ShouldGivePokemonSpeciesDetails() {
-//        // GIVEN
-//        let expectation = XCTestExpectation(description: "Fetch Pokemon Details")
-//        expectation.expectedFulfillmentCount = 1  // Expect to fulfill once
-//
-//        // WHEN
-//        let url = "https://pokeapi.co/api/v2/pokemon-species/132/"
-//        viewModel.fetchAndStorePokemonSpecies(url: url) //(url: url)
-//
-//        // THEN
-//        var cancellable: AnyCancellable?
-//        cancellable = viewModel.$pokemonSpecies
-//            .sink(receiveValue: { pokemonSpecies in
-//                if let details = pokemonSpecies {
-//                    XCTAssertEqual(details.baseHappiness!, 50, "Expected base happiness to be 50")
-//                    XCTAssertEqual(details.flavorTextEntries!.first!.flavorText!, 
-//                                   "Capable of copying\nan enemy\'s genetic\ncode to instantly\u{0C}transform itself\ninto a duplicate\nof the enemy.",
-//                                   "Should be the expected flavor text!")
-//                    expectation.fulfill()
-//                }
-//            })
-//
-//        wait(for: [expectation], timeout: 5.0)
-//        cancellable?.cancel()
-//    }
-        
+    }        
 }
 

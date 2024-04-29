@@ -11,20 +11,10 @@ import Foundation
 struct PokemonDetailView: View {
     
     // MARK: - PROPERTIES
-    
     @ObservedObject var viewModel: PokemonDetailViewModel
     let pokemonURL: String
-    private var documentsDirectory: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    }
     @State private var pulsateAnimation: Bool = false
-    
-    // Environment properties to handle device orientation
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    @Environment(\.colorScheme) var colorScheme
 
-    
     var body: some View {
         Group {
             if let details = viewModel.pokemonDetail {
@@ -64,6 +54,10 @@ struct PokemonDetailView: View {
                             Spacer()
                             Button(action: {
                                 print("Pokemon image tapped")
+                                // HAPTIC
+                                let generator = UIImpactFeedbackGenerator(style: .rigid)
+                                generator.impactOccurred()
+                                // PLAY SOUND
                                 AudioManager.shared.playPokemonCry(legacyUrl: details.cries?.legacy ?? "", latestUrl: details.cries?.latest ?? "")
                             }) {
                                 
@@ -73,10 +67,6 @@ struct PokemonDetailView: View {
                                         .background(Color.gray.opacity(0.3))
                                         .cornerRadius(10))
                                 }
-                                
-//                                CustomAsyncImage(url: URL(string: details.sprites.frontDefault)!) {
-//                                    ProgressView() // Placehoder here
-//                                }
                                 .aspectRatio(contentMode: .fit)
                                 .clipped()
                                 .scaleEffect(self.pulsateAnimation ? 1.1 : 1.0) // Scale effect for animation

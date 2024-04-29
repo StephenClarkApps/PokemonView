@@ -66,11 +66,15 @@ struct PokemonListView: View {
                             CustomAsyncImage(url: URL(string: pokemon.spriteUrl)!) {
                                 ProgressView()
                             }
-                            .frame(width: 40, height: 40)
-                            .cornerRadius(20)
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(25)
 
                             Text(pokemon.name.capitalized)
                                 .modifier(AdaptiveText())
+                            Spacer()
+                        }
+                        .background {
+                            Color.red.opacity(0.00001) // Trying to fix issue with capturing taps
                         }
                         .onTapGesture {
                             selectedPokemon = pokemon
@@ -89,7 +93,7 @@ struct PokemonListView: View {
                         HStack {
                             Spacer()
                             Button("Scroll to Top") {
-                                scrollViewProxy.scrollTo(0, anchor: .top)
+                                scrollViewProxy.scrollTo(0, anchor: .zero)
                             }
                             .accessibilityLabel("Scroll to the top of the List of Pokemon")
                             .padding(5)

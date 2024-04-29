@@ -36,6 +36,7 @@ class PokemonDetailRealmObject: Object {
         self.sprites = SpritesRealmObject(from: pokemonDetail.sprites ?? Sprites(frontDefault: "NADA", backDefault: "NADA"))
         self.stats.append(objectsIn: pokemonDetail.stats.map { StatRealmObject(from: $0) })
         self.types.append(objectsIn: pokemonDetail.types.map { TypeElementRealmObject(from: $0) })
+        self.metadata = PokemonDetailMetadata()
     }
 }
 
