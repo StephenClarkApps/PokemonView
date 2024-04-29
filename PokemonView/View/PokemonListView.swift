@@ -93,9 +93,16 @@ struct PokemonListView: View {
                         HStack {
                             Spacer()
                             Button("Scroll to Top") {
-                                scrollViewProxy.scrollTo(0, anchor: .zero)
+                                // First, stop the momentum by scrolling to a nearby element
+//                                if let firstItem = viewModel.filteredPokemon.first {
+//                                    scrollViewProxy.scrollTo(firstItem.id, anchor: .top)
+//                                }
+//                                
+                                scrollViewProxy.scrollTo(viewModel.filteredPokemon.first?.id ?? "0", anchor: .top)
+                                
                             }
                             .accessibilityLabel("Scroll to the top of the List of Pokemon")
+                            .frame(height: 30.0)
                             .padding(5)
                             .background(Color.blue)
                             .foregroundColor(.white)

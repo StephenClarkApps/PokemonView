@@ -31,6 +31,8 @@ struct PokemonViewApp: SwiftUI.App {
         
         Realm.Configuration.defaultConfiguration = config
 
+        print("Realm file path: \(Realm.Configuration.defaultConfiguration.fileURL!)")
+
         // Realm is initialized
         do {
             _ = try Realm()

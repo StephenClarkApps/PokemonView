@@ -12,10 +12,6 @@ import Foundation
 /// Class that Manages the apps interaction with the backend API service
 class APIManager: PokemonAPIManagerProtocol {
     
-//    func fetchPokemonSpecies(url: String) -> AnyPublisher<PokemonSpecies, any Error> {
-//        // NADA
-//    }
-//    
     private let cacheManager: PokemonCacheManagerProtocol
     
     init(cacheManager: PokemonCacheManagerProtocol) {
@@ -35,7 +31,9 @@ class APIManager: PokemonAPIManagerProtocol {
             .map(\.data)
             .decode(type: Pokemon.self, decoder: JSONDecoder())
             .map { [weak self] pokemonList in
-                self?.cacheManager.savePokemonList(pokemonList)
+                self?.cacheManager.savePokemonList(pokemonList, completion:{
+                    print("The Pokemon List Has been Saved to Realm")
+                })
                 return pokemonList
             }
             .eraseToAnyPublisher()
@@ -67,20 +65,4 @@ class APIManager: PokemonAPIManagerProtocol {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-
-
-    
-    // Add other methods as needed
-    
-//    func isCacheExpired() -> Bool {
-//        print("isCacheExpired")
-//        guard let lastCacheDate = cacheManager.retrieveLastCacheDate() else {
-//            print("Cache doesn't exist, need to fetch from API")
-//            return true // Cache doesn't exist, need to fetch from API
-//        }
-//        // Determine if it's been over 24 hours since we last cached data
-//        let currentDate = Date()
-//        let timeInterval = currentDate.timeIntervalSince(lastCacheDate)
-//        return timeInterval > 24 * 60 * 60 // 24 hours in seconds
-//    }
 }

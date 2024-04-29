@@ -13,8 +13,4 @@ import Combine
 protocol PokemonAPIManagerProtocol {
     func fetchPokemonList(offset: Int, limit: Int) -> AnyPublisher<Pokemon, Error>
     func fetchPokemonDetails(url: String) -> AnyPublisher<PokemonDetail, Error>
-   // func isCacheExpired() -> Bool
-
-//    func fetchPokemonSpecies(url: String) -> AnyPublisher<PokemonSpecies, Error>
-    
 }

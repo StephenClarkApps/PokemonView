@@ -74,7 +74,6 @@ struct PokemonDetail: Codable {
 
 }
 
-
 // MARK: - Sprites
 struct Sprites: Codable {
     let frontDefault: String

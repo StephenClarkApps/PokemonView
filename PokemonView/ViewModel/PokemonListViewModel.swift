@@ -35,32 +35,6 @@ class PokemonListViewModel: ObservableObject {
         }
     }
 
-//    func fetchPokemonDetailsIfNeeded(for pokemon: IndividualPokemon) {
-//        guard pokemon.spriteUrl == nil || pokemon.spriteUrl.isEmpty, !isLoading else { return }
-//        isLoading = true
-//
-//        apiManager.fetchPokemonDetails(url: pokemon.url)
-//            .receive(on: DispatchQueue.main)
-//            .sink(receiveCompletion: { [weak self] completion in
-//                self?.isLoading = false
-//                if case .failure(let error) = completion {
-//                    print("Error fetching Pokémon details: \(error)")
-//                }
-//            }, receiveValue: { [weak self] detail in
-//                if let spriteUrl = detail.sprites?.frontDefault {
-//                    self?.updatePokemonSprite(for: pokemon.id, with: spriteUrl)
-//                }
-//            })
-//            .store(in: &cancellables)
-//    }
-//    
-//
-//    private func updatePokemonSprite(for id: String, with spriteUrl: String?) {
-//        guard let index = pokemonList.firstIndex(where: { $0.id == id }) else { return }
-//        pokemonList[index].spriteUrl = spriteUrl
-//    }
-
-    
     func fetchPokemonList() {
         guard !isLoading else { return }
         isLoading = true
@@ -78,7 +52,11 @@ class PokemonListViewModel: ObservableObject {
             }, receiveValue: { [weak self] response in
                 DispatchQueue.main.async {
                     // Perform Realm operations here directly on the main thread
-                    self?.updateRealm(with: response.results)
+                    
+                    //self?.updateRealm(with: response.results) // SHOULD NOT NEED ??
+                    self?.pokemonList = response.results
+                    self?.filteredPokemon = response.results
+                    
                     self?.hasMoreData = false  // No more data to fetch as we've got all Pokémon.
                 }
             })
@@ -92,6 +70,7 @@ class PokemonListViewModel: ObservableObject {
         }
         do {
             try realm.write {
+                print("realm.deleteAll() called  -  from line 69 PokemonListViewModel")
                 realm.deleteAll()
                 let realmObjects = results.map { IndividualPokemonRealmObject(from: $0) }
                 realm.add(realmObjects)
