@@ -71,3 +71,7 @@ This application not only showcases a robust use of modern Swift technologies an
 
 ### Licensing
 - All Pokémon content is © Nintendo, Game Freak, and The Pokémon Company. This app is not a commerecial product it is only a code demo.
+
+### Credits
+
+Icons Source: https://github.com/duiker101/pokemon-type-svg-icons
