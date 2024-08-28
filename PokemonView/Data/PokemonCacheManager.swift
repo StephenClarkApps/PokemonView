@@ -4,15 +4,15 @@
 //
 //  Created by Stephen Clark on 29/04/2024.
 //
-
 import Foundation
 import RealmSwift
 
-protocol RealmProvider {
+// MARK: - RealmProvider Protocol and Implementation
+protocol RealmProviderProtocol {
     var realm: Realm { get }
 }
 
-class DefaultRealmProvider: RealmProvider {
+class DefaultRealmProvider: RealmProviderProtocol {
     var realm: Realm {
         do {
             return try Realm()
@@ -22,114 +22,99 @@ class DefaultRealmProvider: RealmProvider {
     }
 }
 
+// MARK: - PokemonCacheManager Protocol
+protocol PokemonCacheManagerProtocol {
+    func retrievePokemonList() -> Pokemon?
+    func retrievePokemonDetail(for url: String) -> PokemonDetail?
+    func retrieveLastCacheDate() -> Date?
+    func savePokemonList(_ pokemonList: Pokemon, completion: @escaping () -> Void)
+    func savePokemonDetail(_ pokemonDetail: PokemonDetail, for url: String, completion: @escaping () -> Void)
+    func clearCache()
+    func refreshData()
+}
+
+// MARK: - PokemonCacheManager Implementation
 class PokemonCacheManager: PokemonCacheManagerProtocol {
+
+    private let realmProvider: RealmProviderProtocol
     
-    private let realmProvider: RealmProvider
-        
-        init(realmProvider: RealmProvider) {
-            self.realmProvider = realmProvider
-        }
+    init(realmProvider: RealmProviderProtocol) {
+        self.realmProvider = realmProvider
+    }
     
     func retrievePokemonList() -> Pokemon? {
         guard let cachedPokemonObject = realmProvider.realm.objects(PokemonRealmObject.self).first else {
             return nil
         }
         let pokemon = Pokemon(from: cachedPokemonObject)
-        print("Retrieved Pokemon List from Realm!!!") //: \(pokemon)")
+        Log.shared.info("Retrieved Pokemon List from Realm")
         return pokemon
     }
     
     func retrievePokemonDetail(for url: String) -> PokemonDetail? {
-        
         guard let id = extractIDFromURL(url),
               let cachedPokemonDetailObject = realmProvider.realm.objects(PokemonDetailRealmObject.self).filter("id == %@", id).first else {
             return nil
         }
         let pokemonDetail = PokemonDetail(from: cachedPokemonDetailObject)
-        print("Retrieved \(pokemonDetail.name) Details from Realm")
+        Log.shared.info("Retrieved \(pokemonDetail.name) Details from Realm")
         return pokemonDetail
-        
     }
 
     func retrieveLastCacheDate() -> Date? {
         let cacheDate = realmProvider.realm.objects(PokemonRealmObject.self).first?.metadata?.createdAt
-        print("Retrieved Last Cache Date from Realm") //: \(cacheDate)")
+        Log.shared.debug("Retrieved Last Cache Date from Realm")
         return cacheDate
     }
 
     func savePokemonList(_ pokemonList: Pokemon, completion: @escaping () -> Void) {
-        DispatchQueue.main.async {
+        performWrite { realm in
             let cachedPokemonObject = PokemonRealmObject(from: pokemonList)
-            do {
-                let realm = self.realmProvider.realm // Access realm directly from realmProvider
-                try realm.write {
-                    // Clear the previous data
-                    print("realm.deleteAll() called  -  from line 67 PokemonCacheManger")
-                    realm.deleteAll()
-                    // Add or update the new data
-                    realm.add(cachedPokemonObject, update: .modified)
-                    completion()
-                }
-            } catch {
-                print("Failed to save Pokemon list to Realm: \(error)")
-                completion()  // Ensure to call completion even if there is an error
-            }
+            Log.shared.debug("Saving Pokemon list to Realm")
+            realm.deleteAll()  // Clear previous data
+            realm.add(cachedPokemonObject, update: .modified)
+            completion()
         }
     }
-
 
     func savePokemonDetail(_ pokemonDetail: PokemonDetail, for url: String, completion: @escaping () -> Void) {
-        DispatchQueue.main.async {
+        performWrite { realm in
             let cachedPokemonDetailObject = PokemonDetailRealmObject(from: pokemonDetail)
-            print("Saving \(cachedPokemonDetailObject.name)'s Details to Realm")
-            do {
-                let realm = self.realmProvider.realm // Access realm directly from realmProvider
-                try realm.write {
-                    realm.add(cachedPokemonDetailObject, update: .modified)
-                    completion()
-                }
-            } catch {
-                print("Failed to save Pokemon detail to Realm: \(error)")
-            }
+            Log.shared.debug("Saving \(cachedPokemonDetailObject.name)'s Details to Realm")
+            realm.add(cachedPokemonDetailObject, update: .modified)
+            completion()
         }
     }
 
-
     func clearCache() {
-        DispatchQueue.main.async {
-            do {
-                let realm = self.realmProvider.realm
-                try realm.write {
-                    print("realm.deleteAll() called  -  from line 102 PokemonCacheManger")
-                    realm.deleteAll()
-                }
-            } catch {
-                print("Failed to clear cache: \(error)")
-            }
+        performWrite { realm in
+            Log.shared.debug("Clearing all data in Realm")
+            realm.deleteAll()
         }
     }
 
     func refreshData() {
-        cacheManager.clearCache()
-        retrievePokemonList()
+        clearCache()
+        _ = retrievePokemonList()  // This line doesn't seem to achieve anything as it's not used elsewhere. Consider removing it if unnecessary.
     }
 
+    // MARK: - Private Helper Method for Realm Write Operations
+    private func performWrite(_ block: @escaping (Realm) -> Void) {
+        DispatchQueue.main.async {
+            do {
+                let realm = self.realmProvider.realm
+                try realm.write {
+                    block(realm)
+                }
+            } catch {
+                Log.shared.error("Realm write transaction failed: \(error)")
+            }
+        }
+    }
 }
 
-
-// MARK: - PokemonCacheManagerProtocol
-protocol PokemonCacheManagerProtocol {
-    func retrievePokemonList() -> Pokemon?
-    func retrievePokemonDetail(for url: String) -> PokemonDetail?
-    func retrieveLastCacheDate() -> Date?
-    func savePokemonList(_ pokemonList: Pokemon, completion: @escaping () -> Void)
-    func savePokemonDetail(_ pokemonDetail: PokemonDetail, for url: String, completion: @escaping () -> Void) 
-}
-
+// MARK: - Utility Function
 func extractIDFromURL(_ url: String) -> Int? {
     let components = url.trimmingCharacters(in: CharacterSet(charactersIn: "/")).split(separator: "/")
-    if let idString = components.last, let id = Int(idString) {
-        return id
-    }
-    return nil
+    return Int(components.last ?? "")
 }

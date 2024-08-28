@@ -9,124 +9,148 @@ import Combine
 import Foundation
 import RealmSwift
 
-@MainActor
-class PokemonListViewModel: ObservableObject {
-    
-    @Published var pokemonList: [IndividualPokemon] = []
-    @Published var filteredPokemon: [IndividualPokemon] = []
-    @Published var pokemonDetails: PokemonDetail?
-    @Published var pokemonSpecies: PokemonSpecies?
-    @Published var isLoading: Bool = false
-    @Published var currentPage: Int = 0
-    @Published var hasMoreData: Bool = true
-    @Published var requestSucceeded: Bool = true  // To handle request status
-    
-    private let apiManager: PokemonAPIManagerProtocol
-    private var cancellables: Set<AnyCancellable> = []
-    
-    private var realm: Realm?
+// MARK: - PokemonDataStore Protocol and Implementation
+protocol PokemonDataStoreProtocol {
+    func savePokemonList(_ pokemonList: [IndividualPokemon])
+    func fetchPokemonList() -> [IndividualPokemon]
+    func clearAllData()
+}
 
-    init(apiManager: PokemonAPIManagerProtocol) {
-        self.apiManager = apiManager
+final class PokemonDataStore: PokemonDataStoreProtocol {
+    private let realm: Realm
+    
+    init() {
         do {
             self.realm = try Realm()
         } catch {
-            print("Error initializing Realm: \(error)")
+            fatalError("Error initializing Realm: \(error)")
         }
     }
 
+    func savePokemonList(_ pokemonList: [IndividualPokemon]) {
+        do {
+            try realm.write {
+                realm.deleteAll()
+                let realmObjects = pokemonList.map { IndividualPokemonRealmObject(from: $0) }
+                realm.add(realmObjects)
+            }
+        } catch {
+            Log.shared.error("Error saving to Realm: \(error)")
+        }
+    }
+    
+    func fetchPokemonList() -> [IndividualPokemon] {
+        return Array(realm.objects(IndividualPokemonRealmObject.self)).map { $0.toIndividualPokemon() }
+    }
+    
+    func clearAllData() {
+        do {
+            try realm.write {
+                realm.deleteAll()
+            }
+        } catch {
+            Log.shared.error("Error clearing Realm data: \(error)")
+        }
+    }
+}
+
+// MARK: - PokemonListViewModel Implementation
+@MainActor
+final class PokemonListViewModel: ObservableObject {
+    
+    @Published private(set) var pokemonList: [IndividualPokemon] = []
+    @Published private(set) var filteredPokemon: [IndividualPokemon] = []
+    @Published var pokemonDetails: PokemonDetail?
+    @Published var isLoading: Bool = false
+    @Published var hasMoreData: Bool = true
+    @Published var requestSucceeded: Bool = true
+    @Published var searchQuery: String = ""
+
+    private let apiManager: PokemonAPIManagerProtocol
+    private let dataStore: PokemonDataStoreProtocol
+    private var cancellables: Set<AnyCancellable> = []
+
+    init(apiManager: PokemonAPIManagerProtocol, dataStore: PokemonDataStoreProtocol) {
+        self.apiManager = apiManager
+        self.dataStore = dataStore
+        self.loadCachedPokemonList()
+        self.setupSearchPipeline()
+    }
+
+    private func setupSearchPipeline() {
+        $searchQuery
+            .debounce(for: .milliseconds(350), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .combineLatest($pokemonList)
+            .map { query, list in
+                Log.shared.debug("Debounced search executed with query: \(query)")
+                return query.isEmpty ? list : list.filter { $0.name.lowercased().contains(query.lowercased()) }
+            }
+            .assign(to: &$filteredPokemon)
+    }
+
+    private func loadCachedPokemonList() {
+        pokemonList = dataStore.fetchPokemonList()
+        filteredPokemon = pokemonList
+        hasMoreData = pokemonList.isEmpty
+    }
+
     func fetchPokemonList() {
-        guard !isLoading else { return }
+        guard !isLoading, hasMoreData else { return }
         isLoading = true
-        let limit = 2000  // Fetch all Pokémon, adjust if the number increases in the future.
+        let limit = 2000
 
         apiManager.fetchPokemonList(offset: 0, limit: limit)
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
-                DispatchQueue.main.async {
-                    self?.isLoading = false
-                    if case .failure(let error) = completion {
-                        print("Error fetching Pokémon list: \(error)")
-                        self?.requestSucceeded = false
-                    }
+                guard let self = self else { return }
+                self.isLoading = false
+                switch completion {
+                case .failure(let error):
+                    Log.shared.error("Error fetching Pokémon list: \(error)")
+                    self.requestSucceeded = false
+                case .finished:
+                    self.requestSucceeded = true
                 }
             }, receiveValue: { [weak self] response in
-                DispatchQueue.main.async {
-                    // Perform Realm operations here directly on the main thread
-                    
-                    //self?.updateRealm(with: response.results) // SHOULD NOT NEED ??
-                    self?.pokemonList = response.results
-                    self?.filteredPokemon = response.results
-                    
-                    self?.hasMoreData = false  // No more data to fetch as we've got all Pokémon.
-                }
+                guard let self = self else { return }
+                self.pokemonList = response.results
+                self.filteredPokemon = response.results
+                self.dataStore.savePokemonList(response.results)
+                self.hasMoreData = false
             })
             .store(in: &cancellables)
     }
 
-    func updateRealm(with results: [IndividualPokemon]) {
-        guard let realm = self.realm else {
-            print("Realm not initialized")
-            return
-        }
-        do {
-            try realm.write {
-                print("realm.deleteAll() called  -  from line 69 PokemonListViewModel")
-                realm.deleteAll()
-                let realmObjects = results.map { IndividualPokemonRealmObject(from: $0) }
-                realm.add(realmObjects)
-                DispatchQueue.main.async {
-                    self.pokemonList = results
-                    self.filteredPokemon = results
-                }
-            }
-        } catch {
-            print("Error updating Realm: \(error)")
-        }
-    }
-
-    
     func fetchAndStorePokemonDetails(url: String) {
         fetchPokemonDetails(url: url)
             .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    print("Successfully fetched Pokémon details.")
-                case .failure(let error):
-                    print("Error fetching Pokémon details: \(error)")
+                if case .failure(let error) = completion {
+                    Log.shared.error("Error fetching Pokémon details: \(error)")
                 }
             }, receiveValue: { [weak self] details in
                 self?.pokemonDetails = details
-                print("Details updated for Pokémon: \(details)")
+                Log.shared.info("Details updated for Pokémon: \(details)")
             })
             .store(in: &cancellables)
     }
 
     func searchPokemon(name: String) {
-        if name.isEmpty {
-            filteredPokemon = pokemonList
-        } else {
-            filteredPokemon = pokemonList.filter { $0.name.lowercased().contains(name.lowercased()) }
-        }
+        Log.shared.debug("Search query updated: \(name)")
+        searchQuery = name
     }
-    
+
     func fetchPokemonDetails(url: String) -> AnyPublisher<PokemonDetail, Error> {
         return apiManager.fetchPokemonDetails(url: url)
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    
+
     func clearCacheAndFetchPokemonList() {
-        // Clear here
-        filteredPokemon = []
-        pokemonList = []
-        pokemonDetails = nil
-        pokemonSpecies = nil
-        
         // Clear cache
-        cacheManager.clearCache()
+        dataStore.clearAllData()
 
         // Fetch fresh data
         fetchPokemonList()
     }
-    
 }

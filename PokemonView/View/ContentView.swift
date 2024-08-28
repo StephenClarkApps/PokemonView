@@ -10,11 +10,12 @@ import Foundation
 
 struct ContentView: View {
     
+    // TODO: - Inject dependency
     let apiManager = APIManager(cacheManager: PokemonCacheManager(realmProvider: DefaultRealmProvider()))
 
     var body: some View {
         TabView {
-            PokemonListView(viewModel: PokemonListViewModel(apiManager: apiManager), apiManager: apiManager)
+            PokemonListView(viewModel: PokemonListViewModel(apiManager: apiManager, dataStore: PokemonDataStore()), apiManager: apiManager)
                 .tabItem {
                     Image("icnPokemon").renderingMode(.template)
                     Text("Pokemon")

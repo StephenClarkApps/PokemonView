@@ -1,13 +1,12 @@
 {
-  "originHash" : "0ff1fefcad116c4bf65a0e879838a189c31ad31d4e6bf53ffd02b2381f04a62e",
   "pins" : [
     {
       "identity" : "nuke",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",
       "state" : {
-        "revision" : "8e431251dea0081b6ab154dab61a6ec74e4b6577",
-        "version" : "12.6.0"
+        "revision" : "084076db4f9b9ee4db51177ef5a4879689c1aa09",
+        "version" : "12.7.2"
       }
     },
     {
@@ -24,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
       "state" : {
-        "revision" : "4d815c6e6883bfdcb67cf755d0f0f29a4b399ea7",
-        "version" : "14.5.2"
+        "revision" : "c2552e1d36867cb42b28130e894a81fc17081062",
+        "version" : "14.12.0"
       }
     },
     {
@@ -34,9 +33,9 @@
       "location" : "https://github.com/realm/realm-swift",
       "state" : {
         "branch" : "master",
-        "revision" : "3a9586b62042a4e010f3d3439b67a4779017fe07"
+        "revision" : "7ffcc1165fe335b793f59c5a4ff0d472fcc1625a"
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

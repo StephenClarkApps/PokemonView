@@ -28,7 +28,7 @@ class PokemonDetailViewModel: ObservableObject {
                     // Optionally handle completed state
                     break
                 case .failure(let error):
-                    print("Error loading Pokémon details: \(error)")
+                    Log.shared.debug("Error loading Pokémon details: \(error)")
                     self?.errorMessage = "Failed to load Pokémon details: \(error.localizedDescription)"
                 }
             }, receiveValue: { [weak self] details in
